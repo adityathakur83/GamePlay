@@ -1,0 +1,2838 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SEHHI Nutrition Games</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Noto+Kufi+Arabic:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<!-- HOME -->
+<div id="screen-home" class="screen active">
+  <div id="home-fallback">
+    <div class="float-food" style="left:5%;animation-delay:0s">🍎</div>
+    <div class="float-food" style="left:20%;animation-delay:1.5s">🥦</div>
+    <div class="float-food" style="left:40%;animation-delay:3s">🍊</div>
+    <div class="float-food" style="left:60%;animation-delay:0.7s">🥕</div>
+    <div class="float-food" style="left:78%;animation-delay:2.2s">🍌</div>
+    <div class="float-food" style="left:90%;animation-delay:4s">🥛</div>
+  </div>
+  <video id="home-video" autoplay muted loop playsinline>
+    <source id="home-video-src" src="Children En.mp4" type="video/mp4">
+  </video>
+  <div id="home-overlay">
+    <img class="home-logo" src="SVG/Gamelogo.svg" alt="SEHHI logo">
+    <div class="home-title" id="home-title-en">SEHHI Nutrition Games</div>
+    <div class="home-title hidden" id="home-title-ar" style="font-family:var(--font-ar)">ألعاب صحي التغذوية</div>
+    <div class="home-sub" id="home-sub-en">Learn, Play &amp; Eat Healthy!</div>
+    <div class="home-sub hidden" id="home-sub-ar" style="font-family:var(--font-ar)">تعلم، العب، وكل صحياً!</div>
+    <button id="home-touch-btn" onclick="homeStart()">
+      <span id="hbtn-en">Touch to Start</span>
+      <span id="hbtn-ar" class="hidden" style="font-family:var(--font-ar)">المس للبدء</span>
+    </button>
+    <div class="home-lang-row">
+      <button class="lang-btn active" id="hlang-en" onclick="homeLang('en')">English</button>
+      <button class="lang-btn" id="hlang-ar" onclick="homeLang('ar')">عربي</button>
+    </div>
+  </div>
+  <button class="home-admin-btn" id="admin-hold-btn" onpointerdown="adminHoldStart()" onpointerup="adminHoldCancel()" onpointerleave="adminHoldCancel()">
+    ⚙
+    <svg class="admin-ring"><circle cx="24" cy="24" r="22" id="admin-ring-circle"/></svg>
+  </button>
+</div>
+
+<!-- HUB -->
+<div id="screen-hub" class="screen">
+  <!-- Decorative background blobs -->
+  <div class="hub-blob hub-blob-1"></div>
+  <div class="hub-blob hub-blob-2"></div>
+  <div class="hub-blob hub-blob-3"></div>
+
+  <div class="hub-header">
+    <div class="hub-logo-row">
+      <button class="hub-home-btn" onclick="showScreen('home')" title="Home">🏠</button>
+      <img class="hub-logo-img" src="SVG/Gamelogo.svg" alt="SEHHI logo">
+      <div class="hub-brand-wrap">
+        <div class="hub-brand">SEHHI</div>
+        <div class="hub-brand-sub" data-en="Nutrition Games" data-ar="ألعاب التغذية">Nutrition Games</div>
+      </div>
+      <div class="hub-zone-badge" id="hub-zone-badge">Zone 1</div>
+    </div>
+    <div class="hub-lang-toggle">
+      <button class="hub-lang-btn active" id="hub-lang-en" onclick="setLang('en')">EN</button>
+      <button class="hub-lang-btn" id="hub-lang-ar" onclick="setLang('ar')">ع</button>
+    </div>
+  </div>
+
+  <div class="hub-body">
+    <div class="hub-title-block">
+      <div class="hub-title" id="hub-title">Choose a Game</div>
+      <div class="hub-subtitle" id="hub-subtitle">Tap any game to start playing</div>
+    </div>
+
+    <div class="hub-grid" id="hub-grid">
+
+      <div class="hub-card hub-ws" onclick="goGame('ws')">
+        <div class="hub-card-glow"></div>
+        <div class="hub-card-icon">🔤</div>
+        <div class="hub-card-body">
+          <div class="hub-card-name" data-en="Word Search" data-ar="البحث عن الكلمات">Word Search</div>
+          <div class="hub-card-desc" data-en="Find hidden healthy food words" data-ar="ابحث عن كلمات الطعام الصحي">Find hidden healthy food words</div>
+        </div>
+      </div>
+
+      <div class="hub-card hub-cw" onclick="goGame('cw')">
+        <div class="hub-card-glow"></div>
+        <div class="hub-card-icon">✏️</div>
+        <div class="hub-card-body">
+          <div class="hub-card-name" data-en="Crossword" data-ar="الكلمات المتقاطعة">Crossword</div>
+          <div class="hub-card-desc" data-en="Solve the puzzle clue by clue" data-ar="احل اللغز تلميحاً بتلميح">Solve the puzzle clue by clue</div>
+        </div>
+      </div>
+
+      <div class="hub-card hub-pl" onclick="goGame('pl')">
+        <div class="hub-card-glow"></div>
+        <div class="hub-card-icon">🍽️</div>
+        <div class="hub-card-body">
+          <div class="hub-card-name" data-en="Healthy Plate" data-ar="الطبق الصحي">Healthy Plate</div>
+          <div class="hub-card-desc" data-en="Build a balanced meal" data-ar="ابنِ وجبة متوازنة">Build a balanced meal</div>
+        </div>
+      </div>
+
+      <div class="hub-card hub-re" onclick="goGame('re')">
+        <div class="hub-card-glow"></div>
+        <div class="hub-card-icon">🌱</div>
+        <div class="hub-card-body">
+          <div class="hub-card-name" data-en="Resilience" data-ar="المرونة">Resilience</div>
+          <div class="hub-card-desc" data-en="Build your inner strength" data-ar="ابنِ قوتك الداخلية">Build your inner strength</div>
+        </div>
+      </div>
+
+      <div class="hub-card hub-ph" onclick="goGame('ph')">
+        <div class="hub-card-glow"></div>
+        <div class="hub-card-icon">🏥</div>
+        <div class="hub-card-body">
+          <div class="hub-card-name" data-en="Public Health" data-ar="الصحة العامة">Public Health</div>
+          <div class="hub-card-desc" data-en="Health tips &amp; facts" data-ar="نصائح صحية ومعلومات">Health tips &amp; facts</div>
+        </div>
+      </div>
+
+      <div class="hub-card hub-fa" onclick="goGame('fa')">
+        <div class="hub-card-glow"></div>
+        <div class="hub-card-icon">🩺</div>
+        <div class="hub-card-body">
+          <div class="hub-card-name" data-en="First Aid" data-ar="الإسعافات الأولية">First Aid</div>
+          <div class="hub-card-desc" data-en="Learn emergency tips" data-ar="تعلم نصائح الطوارئ">Learn emergency tips</div>
+        </div>
+      </div>
+
+      <div class="hub-card hub-fg" onclick="goGame('fg')">
+        <div class="hub-card-glow"></div>
+        <div class="hub-card-icon">⬡</div>
+        <div class="hub-card-body">
+          <div class="hub-card-name" data-en="Food Groups Path" data-ar="مسار المجموعات الغذائية">Food Groups Path</div>
+          <div class="hub-card-desc" data-en="Trace the healthy path" data-ar="تتبع مسار الطعام الصحي">Trace the healthy path</div>
+        </div>
+      </div>
+
+      <div class="hub-card hub-dash" onclick="goGame('dash')">
+        <div class="hub-card-glow"></div>
+        <div class="hub-card-icon">🏃</div>
+        <div class="hub-card-body">
+          <div class="hub-card-name" data-en="SEHHI Dash" data-ar="سهي داش">SEHHI Dash</div>
+          <div class="hub-card-desc" data-en="Run, collect &amp; eat healthy!" data-ar="اركض، اجمع وكل صحياً!">Run, collect &amp; eat healthy!</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- SEHHI DASH — CHARACTER SELECT -->
+<div id="screen-dash-select" class="screen">
+  <div class="game-header">
+    <div class="gh-left">
+      <button class="back-btn" onclick="goHub()">&#8592;</button>
+      <span class="game-title-en">SEHHI Dash</span>
+      <span class="game-title-ar" style="font-family:var(--font-ar)">سهي داش</span>
+    </div>
+    <div class="gh-right">
+      <button class="g-lang-btn active" id="dash-sel-lang-en" onclick="setLang('en')">EN</button>
+      <button class="g-lang-btn" id="dash-sel-lang-ar" onclick="setLang('ar')">ع</button>
+    </div>
+  </div>
+  <div class="dash-sel-body">
+    <div class="dash-sel-title" id="dash-sel-title">Choose Your Runner!</div>
+    <div class="dash-sel-sub" id="dash-sel-sub">Select a character to start your healthy adventure</div>
+    <div class="dash-char-grid">
+
+      <div class="dash-char-card" onclick="dashSelectChar('sehhi')">
+        <div class="dash-char-canvas-wrap">
+          <canvas id="dash-prev-sehhi" width="160" height="200"></canvas>
+        </div>
+        <div class="dash-char-info">
+          <div class="dash-char-name" id="dash-cname-sehhi">Zayed — زايد</div>
+          <div class="dash-char-ability">
+            <span class="dash-abil-icon">🧲</span>
+            <span class="dash-abil-text" id="dash-cabil-sehhi">Magnet Power — جذب الطعام</span>
+          </div>
+          <div class="dash-char-stats">
+            <div class="dash-stat"><span class="dash-stat-lbl">Speed</span><div class="dash-stat-bar"><div class="dash-stat-fill" style="width:65%;background:#E91E8C"></div></div></div>
+            <div class="dash-stat"><span class="dash-stat-lbl">Power</span><div class="dash-stat-bar"><div class="dash-stat-fill" style="width:90%;background:#E91E8C"></div></div></div>
+          </div>
+        </div>
+        <button class="dash-select-btn" id="dash-btn-sehhi">▶ Select</button>
+      </div>
+
+      <div class="dash-char-card" onclick="dashSelectChar('zayed')">
+        <div class="dash-char-canvas-wrap">
+          <canvas id="dash-prev-zayed" width="160" height="200"></canvas>
+        </div>
+        <div class="dash-char-info">
+          <div class="dash-char-name" id="dash-cname-zayed">Shaikha — شيخة</div>
+          <div class="dash-char-ability">
+            <span class="dash-abil-icon">🛡️</span>
+            <span class="dash-abil-text" id="dash-cabil-zayed">Shield Power — درع الحماية</span>
+          </div>
+          <div class="dash-char-stats">
+            <div class="dash-stat"><span class="dash-stat-lbl">Speed</span><div class="dash-stat-bar"><div class="dash-stat-fill" style="width:85%;background:#1565C0"></div></div></div>
+            <div class="dash-stat"><span class="dash-stat-lbl">Power</span><div class="dash-stat-bar"><div class="dash-stat-fill" style="width:70%;background:#1565C0"></div></div></div>
+          </div>
+        </div>
+        <button class="dash-select-btn" id="dash-btn-zayed">▶ Select</button>
+      </div>
+
+    </div>
+    <div class="dash-sel-tip" id="dash-sel-tip">Collect all 5 food groups to unlock your special ability! • اجمع المجموعات الغذائية الخمس لتفعيل قدرتك الخاصة!</div>
+  </div>
+</div>
+
+<!-- SEHHI DASH — GAME -->
+<div id="screen-dash" class="screen">
+  <div class="game-header dash-game-header">
+    <div class="gh-left">
+      <button class="back-btn" onclick="dashQuit()">&#8592;</button>
+      <span class="game-title-en">SEHHI Dash</span>
+      <span class="game-title-ar" style="font-family:var(--font-ar)">سهي داش</span>
+    </div>
+    <div class="dash-hud">
+      <div class="dash-hud-block">
+        <div class="dash-hud-label" id="dash-score-label">SCORE</div>
+        <div class="dash-hud-val" id="dash-score">0</div>
+      </div>
+      <div class="dash-hud-sep"></div>
+      <div class="dash-hud-block">
+        <div class="dash-hud-label" id="dash-best-label">BEST</div>
+        <div class="dash-hud-val" id="dash-best">0</div>
+      </div>
+      <div class="dash-hud-sep"></div>
+      <div class="dash-hud-block">
+        <div class="dash-hud-label">DIST</div>
+        <div class="dash-hud-val dash-hud-dist" id="dash-dist">0m</div>
+      </div>
+      <div class="dash-hud-sep"></div>
+      <div class="dash-hud-lives" id="dash-lives">❤️❤️❤️</div>
+      <div class="dash-hud-sep"></div>
+      <div class="dash-hud-ability">
+        <div class="dash-hud-label" id="dash-abil-label">ABILITY</div>
+        <div class="dash-abil-bar-wrap"><div class="dash-abil-bar-fill" id="dash-abil-fill"></div></div>
+        <div class="dash-hud-abil-name" id="dash-abil-name">🧲</div>
+      </div>
+    </div>
+    <div class="gh-right">
+      <button class="g-lang-btn active" id="dash-lang-en" onclick="setLang('en')">EN</button>
+      <button class="g-lang-btn" id="dash-lang-ar" onclick="setLang('ar')">ع</button>
+    </div>
+  </div>
+  <div class="dash-body">
+    <canvas id="dash-canvas"></canvas>
+    <div class="dash-ctrl-panel">
+      <button class="dash-ctrl-btn dash-ctrl-left" id="dash-btn-up"
+        ontouchstart="dashCtrlStart(-1)" ontouchend="dashCtrlStop()" ontouchcancel="dashCtrlStop()"
+        onmousedown="dashCtrlStart(-1)" onmouseup="dashCtrlStop()" onmouseleave="dashCtrlStop()">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M18 6L8 14L18 22" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="dash-ctrl-mid">
+        <div class="dash-ctrl-lanes">
+          <div class="dash-pos-track"><div class="dash-pos-thumb" id="dash-pos-thumb"></div></div>
+        </div>
+        <div class="dash-ctrl-label">MOVE</div>
+      </div>
+      <button class="dash-ctrl-btn dash-ctrl-right" id="dash-btn-dn"
+        ontouchstart="dashCtrlStart(1)" ontouchend="dashCtrlStop()" ontouchcancel="dashCtrlStop()"
+        onmousedown="dashCtrlStart(1)" onmouseup="dashCtrlStop()" onmouseleave="dashCtrlStop()">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M10 6L20 14L10 22" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+
+    <!-- Nutrition tip banner -->
+    <div class="dash-tip-banner" id="dash-tip-banner">
+      <span class="dash-tip-icon" id="dash-tip-icon">🍎</span>
+      <div class="dash-tip-txt" id="dash-tip-txt"></div>
+    </div>
+
+    <!-- Countdown -->
+    <div class="dash-countdown" id="dash-countdown"></div>
+
+    <!-- Ability activate flash -->
+    <div class="dash-abil-flash" id="dash-abil-flash"></div>
+
+    <!-- Game Over -->
+    <div class="dash-gameover hidden" id="dash-gameover">
+      <div class="dash-go-card">
+        <img class="dash-go-logo" src="SVG/Gamelogo.svg" alt="SEHHI logo">
+        <div class="dash-go-emoji" id="dash-go-emoji">🏁</div>
+        <div class="dash-go-title" id="dash-go-title">Game Over!</div>
+        <div class="dash-go-scores">
+          <div class="dash-go-score-block">
+            <div class="dash-go-score-lbl" id="dash-go-score-lbl">Score</div>
+            <div class="dash-go-score-val" id="dash-go-score-val">0</div>
+          </div>
+          <div class="dash-go-score-block dash-go-best-block">
+            <div class="dash-go-score-lbl" id="dash-go-best-lbl">Best</div>
+            <div class="dash-go-score-val" id="dash-go-best-val">0</div>
+          </div>
+          <div class="dash-go-score-block dash-go-dist-block">
+            <div class="dash-go-score-lbl" id="dash-go-dist-lbl">Distance</div>
+            <div class="dash-go-score-val dash-go-dist-val" id="dash-go-dist-val">0m</div>
+          </div>
+        </div>
+        <div class="dash-go-tip" id="dash-go-tip"></div>
+        <div class="dash-go-btns">
+          <button class="dash-go-btn dash-retry-btn" onclick="dashRetry()">▶ Play Again</button>
+          <button class="dash-go-btn dash-hub-btn" onclick="goHub()">🏠 Hub</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- WORD SEARCH -->
+<div id="screen-ws" class="screen">
+  <div class="game-header">
+    <div class="gh-left">
+      <button class="back-btn" onclick="goHub()">&#8592;</button>
+      <span class="game-title-en">Word Search</span>
+      <span class="game-title-ar">البحث عن الكلمات</span>
+    </div>
+    <div class="gh-right">
+      <button class="g-lang-btn active" id="ws-lang-en" onclick="setLang('en')">EN</button>
+      <button class="g-lang-btn" id="ws-lang-ar" onclick="setLang('ar')">ع</button>
+    </div>
+  </div>
+  <div class="game-body">
+    <div class="ws-main-layout">
+
+      <!-- LEFT: How to Play -->
+      <div class="ws-how-panel">
+        <div class="ws-how-heading"><span class="ws-how-icon">🔍</span>How to Play<br><span style="font-family:var(--font-ar);font-size:.9rem;font-weight:700;opacity:.8">كيف تلعب</span></div>
+        <div style="display:flex;flex-direction:column;gap:14px;">
+          <div class="ws-how-step">
+            <div class="ws-step-num">1</div>
+            <div class="ws-step-text">Spot a hidden word in the letter grid<div class="ws-step-text-ar">ابحث عن كلمة مخفية في الشبكة</div></div>
+          </div>
+          <div class="ws-how-step">
+            <div class="ws-step-num">2</div>
+            <div class="ws-step-text">Press & drag across the letters<div class="ws-step-text-ar">اضغط واسحب على الحروف</div></div>
+          </div>
+          <div class="ws-how-step">
+            <div class="ws-step-num">3</div>
+            <div class="ws-step-text">Release — it lights up if correct!<div class="ws-step-text-ar">ارفع إصبعك — ستضيء إن كانت صحيحة!</div></div>
+          </div>
+          <div class="ws-how-step">
+            <div class="ws-step-num">4</div>
+            <div class="ws-step-text">Find all words to win 🏆<div class="ws-step-text-ar">اعثر على جميع الكلمات للفوز</div></div>
+          </div>
+        </div>
+        <div class="ws-divider"></div>
+        <div>
+          <div class="ws-prog-heading">Progress — التقدم</div>
+          <div class="ws-prog-bar-wrap"><div class="ws-prog-bar" id="ws-prog-bar"></div></div>
+          <div class="ws-prog-label" id="ws-prog-label">0 / 10</div>
+          <div class="ws-prog-emoji" id="ws-prog-emoji">🔍</div>
+        </div>
+      </div>
+
+      <!-- CENTER: Grid -->
+      <div class="ws-grid-panel">
+        <div class="ws-grid-heading" id="ws-grid-title">Find the Words</div>
+        <div id="ws-grid-en"></div>
+        <div id="ws-grid-ar" style="display:none;direction:rtl;"></div>
+      </div>
+
+      <!-- RIGHT: Word list -->
+      <div class="ws-words-panel">
+        <div class="ws-words-heading" id="ws-words-title">Words to Find</div>
+        <div class="ws-words" id="ws-word-list"></div>
+        <button class="ws-check-btn" id="ws-check-btn" onclick="wsCheck()">Check Answers ✓</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- CROSSWORD -->
+<div id="screen-cw" class="screen">
+  <div class="game-header">
+    <div class="gh-left">
+      <button class="back-btn" onclick="goHub()">&#8592;</button>
+      <span class="game-title-en">Crossword</span>
+      <span class="game-title-ar">الكلمات المتقاطعة</span>
+    </div>
+    <div class="gh-right">
+      <button class="g-lang-btn active" id="cw-lang-en" onclick="setLang('en')">EN</button>
+      <button class="g-lang-btn" id="cw-lang-ar" onclick="setLang('ar')">ع</button>
+    </div>
+  </div>
+  <div class="game-body">
+    <div class="cw-main-layout">
+
+      <!-- LEFT: How to Play -->
+      <div class="cw-how-panel">
+        <div class="cw-how-heading"><span class="cw-how-icon">✏️</span>How to Play<br><span style="font-family:var(--font-ar);font-size:.9rem;font-weight:700;opacity:.8">كيف تلعب</span></div>
+        <div style="display:flex;flex-direction:column;gap:14px;">
+          <div class="cw-how-step">
+            <div class="cw-step-num">1</div>
+            <div class="cw-step-text">Read a clue on the right panel<div class="cw-step-text-ar">اقرأ التلميح في اللوحة اليمنى</div></div>
+          </div>
+          <div class="cw-how-step">
+            <div class="cw-step-num">2</div>
+            <div class="cw-step-text">Tap a clue to highlight its row<div class="cw-step-text-ar">اضغط على التلميح لتحديد الصف</div></div>
+          </div>
+          <div class="cw-how-step">
+            <div class="cw-step-num">3</div>
+            <div class="cw-step-text">Type the answer letter by letter<div class="cw-step-text-ar">اكتب الإجابة حرفاً بحرف</div></div>
+          </div>
+          <div class="cw-how-step">
+            <div class="cw-step-num">4</div>
+            <div class="cw-step-text">⭐ column reveals the Secret Word!<div class="cw-step-text-ar">العمود ⭐ يكشف الكلمة السرية!</div></div>
+          </div>
+        </div>
+        <div class="cw-divider"></div>
+        <div>
+          <div class="cw-prog-heading">Progress — التقدم</div>
+          <div class="cw-prog-bar-wrap"><div class="cw-prog-bar" id="cw-prog-bar"></div></div>
+          <div class="cw-prog-label" id="cw-prog-label">0 / 5 clues</div>
+          <div class="cw-prog-emoji" id="cw-prog-emoji">✏️</div>
+        </div>
+      </div>
+
+      <!-- CENTER: Grid + Secret -->
+      <div class="cw-center-panel">
+        <div class="cw-grid-card">
+          <div class="cw-grid-heading" id="cw-grid-title">Fill in the Crossword</div>
+          <div class="cw-secret-hint">⭐ The highlighted column spells the Secret Word</div>
+          <div id="cw-grid-en"></div>
+          <div id="cw-grid-ar" style="display:none;direction:rtl;"></div>
+        </div>
+        <div class="cw-secret-card">
+          <div class="cw-secret-label" id="cw-secret-label">🔐 Secret Word — الكلمة السرية</div>
+          <div class="cw-secret-boxes" id="cw-secret-boxes"></div>
+          <div id="cw-secret-reveal"></div>
+        </div>
+        <button class="cw-check-btn" onclick="cwCheck()" id="cw-check-btn">Check Answers ✓</button>
+      </div>
+
+      <!-- RIGHT: Clues -->
+      <div class="cw-clues-panel">
+        <div class="cw-clues-heading" id="cw-clue-title">Clues — التلميحات</div>
+        <div id="cw-clue-list"></div>
+      </div>
+
+    </div>
+  </div>
+  <!-- ON-SCREEN KEYBOARD -->
+  <div id="cw-keyboard" class="cw-keyboard" style="display:none;">
+    <div class="cw-kb-lang-row">
+      <span class="cw-kb-lang-label" id="cw-kb-lang-label">English</span>
+      <button class="cw-kb-close" onclick="cwKbHide()">✕</button>
+    </div>
+    <div id="cw-kb-rows"></div>
+  </div>
+</div>
+
+<!-- PLATE BUILDER -->
+<div id="screen-pl" class="screen">
+  <div class="game-header">
+    <div class="gh-left">
+      <button class="back-btn" onclick="goHub()">&#8592;</button>
+      <span class="game-title-en">Healthy Plate</span>
+      <span class="game-title-ar">الطبق الصحي</span>
+    </div>
+    <div class="gh-right">
+      <button class="g-lang-btn active" id="pl-lang-en" onclick="setLang('en')">EN</button>
+      <button class="g-lang-btn" id="pl-lang-ar" onclick="setLang('ar')">ع</button>
+    </div>
+  </div>
+  <div class="game-body">
+    <div class="pl-main-layout">
+
+      <!-- LEFT: How to Play -->
+      <div class="pl-how-panel">
+        <div class="pl-how-heading"><span class="pl-how-icon">🍽️</span>How to Play<br><span style="font-family:var(--font-ar);font-size:.9rem;font-weight:700;opacity:.8">كيف تلعب</span></div>
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          <div class="pl-how-step">
+            <div class="pl-step-num">1</div>
+            <div class="pl-step-text">Choose one food from each group<div class="pl-step-text-ar">اختر طعاماً من كل مجموعة</div></div>
+          </div>
+          <div class="pl-how-step">
+            <div class="pl-step-num">2</div>
+            <div class="pl-step-text">Watch it appear on your plate!<div class="pl-step-text-ar">شاهده يظهر على طبقك!</div></div>
+          </div>
+          <div class="pl-how-step">
+            <div class="pl-step-num">3</div>
+            <div class="pl-step-text">Fill all 5 food groups<div class="pl-step-text-ar">املأ جميع المجموعات الخمس</div></div>
+          </div>
+          <div class="pl-how-step">
+            <div class="pl-step-num">4</div>
+            <div class="pl-step-text">Check your plate to win! 🏆<div class="pl-step-text-ar">تحقق من طبقك للفوز! 🏆</div></div>
+          </div>
+        </div>
+        <div class="pl-divider"></div>
+        <div>
+          <div class="pl-prog-heading">Progress — التقدم</div>
+          <div class="pl-prog-dots" id="pl-prog-dots"></div>
+          <div class="pl-prog-bar-wrap"><div class="pl-prog-bar" id="pl-prog-bar"></div></div>
+          <div class="pl-prog-label" id="pl-prog-label">0 / 5 groups</div>
+        </div>
+      </div>
+
+      <!-- CENTER: Plate -->
+      <div class="pl-center-panel">
+        <div class="pl-plate-card">
+          <div class="pl-plate-heading" id="pl-plate-heading">Build Your Healthy Plate!</div>
+          <div class="plate-box" id="plate-box">
+            <svg id="pl-plate-svg" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <filter id="pl-drop-shadow" x="-10%" y="-10%" width="120%" height="120%">
+                  <feDropShadow dx="0" dy="6" stdDeviation="14" flood-color="rgba(0,0,0,0.18)"/>
+                </filter>
+              </defs>
+              <!-- Outer plate (rim) -->
+              <circle cx="250" cy="250" r="232" fill="white" filter="url(#pl-drop-shadow)"/>
+              <circle cx="250" cy="250" r="232" fill="none" stroke="#e0e0e0" stroke-width="3"/>
+              <circle cx="250" cy="250" r="218" fill="none" stroke="#f0f0f0" stroke-width="1.5"/>
+              <!-- 5 pie slices (r=200) -->
+              <!-- Protein: top → top-right (-90° to -18°) -->
+              <path id="pl-slice-0" class="pl-slice" d="M250,250 L250,50 A200,200,0,0,1,440.2,188.2 Z" fill="#F3E5F5" stroke="white" stroke-width="5" stroke-linejoin="round"/>
+              <!-- Vegetable: top-right → bottom-right (-18° to 54°) -->
+              <path id="pl-slice-1" class="pl-slice" d="M250,250 L440.2,188.2 A200,200,0,0,1,367.6,411.8 Z" fill="#E8F5E9" stroke="white" stroke-width="5" stroke-linejoin="round"/>
+              <!-- Fruits: bottom-right → bottom-left (54° to 126°) -->
+              <path id="pl-slice-2" class="pl-slice" d="M250,250 L367.6,411.8 A200,200,0,0,1,132.4,411.8 Z" fill="#FFF3E0" stroke="white" stroke-width="5" stroke-linejoin="round"/>
+              <!-- Grains: bottom-left → top-left (126° to 198°) -->
+              <path id="pl-slice-3" class="pl-slice" d="M250,250 L132.4,411.8 A200,200,0,0,1,59.8,188.2 Z" fill="#FFFDE7" stroke="white" stroke-width="5" stroke-linejoin="round"/>
+              <!-- Dairy: top-left → top (198° to 270°) -->
+              <path id="pl-slice-4" class="pl-slice" d="M250,250 L59.8,188.2 A200,200,0,0,1,250,50 Z" fill="#E3F2FD" stroke="white" stroke-width="5" stroke-linejoin="round"/>
+              <!-- Center white circle -->
+              <circle cx="250" cy="250" r="38" fill="white" stroke="#f0f0f0" stroke-width="2"/>
+              <text x="250" y="258" text-anchor="middle" dominant-baseline="middle" font-size="28">🍽️</text>
+              <!-- Food emoji (updated by JS) -->
+              <text id="pl-emoji-0" x="318" y="162" text-anchor="middle" dominant-baseline="middle" font-size="36" opacity="0.22">🥩</text>
+              <text id="pl-emoji-1" x="362" y="288" text-anchor="middle" dominant-baseline="middle" font-size="36" opacity="0.22">🥦</text>
+              <text id="pl-emoji-2" x="250" y="368" text-anchor="middle" dominant-baseline="middle" font-size="36" opacity="0.22">🍎</text>
+              <text id="pl-emoji-3" x="138" y="288" text-anchor="middle" dominant-baseline="middle" font-size="36" opacity="0.22">🍞</text>
+              <text id="pl-emoji-4" x="182" y="162" text-anchor="middle" dominant-baseline="middle" font-size="36" opacity="0.22">🥛</text>
+              <!-- Group name labels (updated by JS) -->
+              <text id="pl-label-0" class="pl-slice-label" x="342" y="116" text-anchor="middle" font-size="12" font-weight="800" fill="#9C27B0" opacity="0.6">PROTEIN</text>
+              <text id="pl-label-1" class="pl-slice-label" x="400" y="302" text-anchor="middle" font-size="12" font-weight="800" fill="#388E3C" opacity="0.6">VEGETABLE</text>
+              <text id="pl-label-2" class="pl-slice-label" x="250" y="412" text-anchor="middle" font-size="12" font-weight="800" fill="#E64A19" opacity="0.6">FRUITS</text>
+              <text id="pl-label-3" class="pl-slice-label" x="100" y="302" text-anchor="middle" font-size="12" font-weight="800" fill="#F9A825" opacity="0.6">GRAINS</text>
+              <text id="pl-label-4" class="pl-slice-label" x="158" y="116" text-anchor="middle" font-size="12" font-weight="800" fill="#1565C0" opacity="0.6">DAIRY</text>
+              <!-- "Tap to remove" hint (hidden by default, shown on slice hover via JS) -->
+            </svg>
+          </div>
+        </div>
+        <div class="pl-benefit-card">
+          <div class="pl-benefit-text" id="pl-benefit-text"></div>
+          <div class="pl-benefit-placeholder" id="pl-benefit-placeholder">Pick a food to see its benefit! 🌟</div>
+        </div>
+        <button class="pl-submit-btn" onclick="plSubmit()" id="pl-submit-btn">Check My Plate ✓</button>
+      </div>
+
+      <!-- RIGHT: Food Groups -->
+      <div class="pl-groups-panel">
+        <div class="pl-groups-heading" id="pl-groups-title">Food Groups — المجموعات الغذائية</div>
+        <div id="pl-food-groups"></div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- RESILIENCE -->
+<div id="screen-re" class="screen">
+  <div class="game-header">
+    <div class="gh-left">
+      <button class="back-btn" onclick="goHub()">&#8592;</button>
+      <span style="font-size:1.2rem;font-weight:900;color:var(--white);">🌱 Recipe for Resilience &nbsp;|&nbsp; <span style="font-family:var(--font-ar)">وصفة المرونة</span></span>
+    </div>
+    <div class="gh-right">
+      <div id="re-idle-wrap" style="display:none;flex-direction:column;align-items:flex-end;gap:4px;">
+        <span style="font-size:.75rem;color:rgba(255,255,255,.7);font-weight:600;" id="re-idle-label">Returning in 45s</span>
+        <div class="fa-idle-bar" style="width:160px;"><div class="fa-idle-progress" id="re-idle-bar" style="width:100%;background:#4CAF50;"></div></div>
+      </div>
+    </div>
+  </div>
+  <div class="game-body" id="re-body">
+    <div class="re-main-layout">
+      <!-- LEFT: topic list -->
+      <div class="re-left-panel">
+        <div class="re-tl-label">Topics / المواضيع</div>
+        <div class="re-tl-item" data-idx="0" onclick="reShowTopic(0)"><span class="re-tl-icon">🧒</span><div><div class="re-tl-en">About Me</div><div class="re-tl-ar">عَنّي</div></div></div>
+        <div class="re-tl-item" data-idx="1" onclick="reShowTopic(1)"><span class="re-tl-icon">🌳</span><div><div class="re-tl-en">Perseverance</div><div class="re-tl-ar">المثابرة</div></div></div>
+        <div class="re-tl-item" data-idx="2" onclick="reShowTopic(2)"><span class="re-tl-icon">📚</span><div><div class="re-tl-en">Learning Mindset</div><div class="re-tl-ar">عقلية التعلم</div></div></div>
+        <div class="re-tl-item" data-idx="3" onclick="reShowTopic(3)"><span class="re-tl-icon">🧠</span><div><div class="re-tl-en">Growth Mindset</div><div class="re-tl-ar">عقلية النمو</div></div></div>
+        <div class="re-tl-item" data-idx="4" onclick="reShowTopic(4)"><span class="re-tl-icon">💬</span><div><div class="re-tl-en">Positive Self-Talk</div><div class="re-tl-ar">الحديث الإيجابي</div></div></div>
+        <div class="re-tl-item" data-idx="5" onclick="reShowTopic(5)"><span class="re-tl-icon">😊</span><div><div class="re-tl-en">Feelings</div><div class="re-tl-ar">المشاعر</div></div></div>
+        <div class="re-tl-item" data-idx="6" onclick="reShowTopic(6)"><span class="re-tl-icon">🌸</span><div><div class="re-tl-en">Gratitude</div><div class="re-tl-ar">الامتنان</div></div></div>
+        <div class="re-tl-howto">
+          <div class="re-tl-howto-title">How to use</div>
+          <p>Tap a topic to explore resilience activities / اضغط لاستكشاف الأنشطة</p>
+        </div>
+      </div>
+      <!-- CENTER: injected content -->
+      <div class="re-center-panel">
+        <div id="re-detail" class="re-detail"></div>
+      </div>
+      <!-- RIGHT: motivation panel -->
+      <div class="re-right-panel">
+        <div class="re-glass-box">
+          <div class="re-glass-label">🌟 Daily Mantra</div>
+          <div class="re-glass-body">I can do hard things.<br>I learn from mistakes.<br>I grow every day.<br><span style="font-family:var(--font-ar);direction:rtl;display:block;margin-top:8px;color:rgba(255,255,255,.75);">أستطيع القيام بأشياء صعبة — أتعلم من أخطائي — أنمو كل يوم</span></div>
+        </div>
+        <div class="re-glass-box">
+          <div class="re-glass-label">💡 Growth Mindset</div>
+          <div class="re-glass-body">"I can't do this <em>yet</em>" — adding YET turns limits into possibilities!<br><span style="font-family:var(--font-ar);direction:rtl;display:block;margin-top:8px;color:rgba(255,255,255,.75);">لا أستطيع فعل هذا <em>بعد</em> — إضافة "بعد" تحوّل الحدود إلى إمكانيات!</span></div>
+        </div>
+        <div class="re-glass-box" style="background:rgba(76,175,80,.25);border-color:rgba(76,175,80,.4);">
+          <div class="re-glass-label">🇦🇪 UAE Spirit</div>
+          <div class="re-glass-body">Sheikh Zayed's perseverance built a nation. Your perseverance builds your future.<br><span style="font-family:var(--font-ar);direction:rtl;display:block;margin-top:8px;color:rgba(255,255,255,.75);">مثابرة الشيخ زايد بنت أمة — مثابرتك تبني مستقبلك</span></div>
+        </div>
+      </div>
+    </div>
+    <div id="re-menu" style="display:none!important"></div>
+  </div>
+
+  <!-- RE ABOUT ME ON-SCREEN KEYBOARD -->
+  <div id="re-keyboard" style="display:none;position:absolute;bottom:0;left:0;right:0;z-index:60;background:linear-gradient(180deg,#1a2a1a 0%,#0e1a0e 100%);border-top:2px solid rgba(76,175,80,.35);padding:14px 20px 18px;flex-direction:column;gap:10px;box-shadow:0 -8px 32px rgba(0,0,0,.5);">
+    <div style="display:flex;align-items:center;justify-content:space-between;">
+      <div id="re-kb-input" style="flex:1;background:rgba(255,255,255,.1);border-radius:10px;padding:8px 14px;font-size:1rem;font-weight:700;color:#fff;min-height:36px;letter-spacing:.5px;border:1.5px solid rgba(76,175,80,.4);"></div>
+      <button onclick="reAboutClose()" style="margin-left:12px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.2);border-radius:8px;color:#fff;font-size:1rem;width:40px;height:40px;cursor:pointer;flex-shrink:0;">✓</button>
+    </div>
+    <div id="re-kb-rows"></div>
+  </div>
+</div>
+
+<!-- PUBLIC HEALTH -->
+<div id="screen-ph" class="screen">
+  <div class="game-header">
+    <div class="gh-left">
+      <button class="back-btn" onclick="goHub()">&#8592;</button>
+      <span style="font-size:1.3rem;font-weight:900;color:var(--white);">🏥 Public Health Corner &nbsp;|&nbsp; <span style="font-family:var(--font-ar)">ركن الصحة العامة</span></span>
+    </div>
+    <div class="gh-right">
+      <div id="ph-idle-wrap" style="display:none;flex-direction:column;align-items:flex-end;gap:4px;">
+        <span style="font-size:.75rem;color:rgba(255,255,255,.7);font-weight:600;" id="ph-idle-label">Returning in 45s</span>
+        <div class="fa-idle-bar" style="width:160px;"><div class="fa-idle-progress" id="ph-idle-bar" style="width:100%;background:#00BCD4;"></div></div>
+      </div>
+    </div>
+  </div>
+  <div class="game-body" id="ph-body">
+    <div class="ph-main-layout">
+      <!-- LEFT: topic list -->
+      <div class="ph-left-panel">
+        <div class="ph-tl-label">Topics / المواضيع</div>
+        <div class="ph-tl-item" data-idx="0" onclick="phShowTopic(0)"><span class="ph-tl-icon">🙌</span><div><div class="ph-tl-en">Handwashing</div><div class="ph-tl-ar">غسل اليدين</div></div></div>
+        <div class="ph-tl-item" data-idx="1" onclick="phShowTopic(1)"><span class="ph-tl-icon">💉</span><div><div class="ph-tl-en">Vaccines</div><div class="ph-tl-ar">اللقاحات</div></div></div>
+        <div class="ph-tl-item" data-idx="2" onclick="phShowTopic(2)"><span class="ph-tl-icon">😴</span><div><div class="ph-tl-en">Sleep</div><div class="ph-tl-ar">النوم الكافي</div></div></div>
+        <div class="ph-tl-item" data-idx="3" onclick="phShowTopic(3)"><span class="ph-tl-icon">📱</span><div><div class="ph-tl-en">Screen Time</div><div class="ph-tl-ar">وقت الشاشة</div></div></div>
+        <div class="ph-tl-item" data-idx="4" onclick="phShowTopic(4)"><span class="ph-tl-icon">⚽</span><div><div class="ph-tl-en">Physical Activity</div><div class="ph-tl-ar">النشاط البدني</div></div></div>
+        <div class="ph-tl-item" data-idx="5" onclick="phShowTopic(5)"><span class="ph-tl-icon">🧠</span><div><div class="ph-tl-en">Mental Health</div><div class="ph-tl-ar">الصحة النفسية</div></div></div>
+        <div class="ph-tl-howto">
+          <div class="ph-tl-howto-title">How to use</div>
+          <p>Tap a topic to learn public health tips / اضغط لتعلم نصائح الصحة العامة</p>
+        </div>
+      </div>
+      <!-- CENTER: injected content -->
+      <div class="ph-center-panel">
+        <div id="ph-detail" class="ph-detail fa-detail"></div>
+      </div>
+      <!-- RIGHT: health tips panel -->
+      <div class="ph-right-panel">
+        <div class="ph-glass-box" style="background:rgba(0,188,212,.2);border-color:rgba(0,188,212,.4);">
+          <div class="ph-glass-label">💧 Did You Know?</div>
+          <div class="ph-glass-body">Washing hands for 20 seconds removes 99% of germs — as long as singing "Happy Birthday" twice!<br><span style="font-family:var(--font-ar);direction:rtl;display:block;margin-top:8px;color:rgba(255,255,255,.75);">غسل اليدين 20 ثانية يزيل 99% من الجراثيم!</span></div>
+        </div>
+        <div class="ph-glass-box">
+          <div class="ph-glass-label">🏥 ADPHC Reminder</div>
+          <div class="ph-glass-body">Abu Dhabi Public Health Centre promotes healthy communities through prevention and education.<br><span style="font-family:var(--font-ar);direction:rtl;display:block;margin-top:8px;color:rgba(255,255,255,.75);">مركز أبوظبي للصحة العامة يعزز مجتمعات صحية من خلال الوقاية والتعليم</span></div>
+        </div>
+        <div class="ph-glass-box">
+          <div class="ph-glass-label">📞 Health Line</div>
+          <div style="text-align:center;padding:10px 0;">
+            <div style="font-size:2rem;font-weight:900;color:#fff;letter-spacing:2px;">800-HEALTH</div>
+            <div style="font-size:.8rem;color:rgba(255,255,255,.8);font-weight:700;margin-top:6px;">Abu Dhabi Health Hotline</div>
+            <div style="font-family:var(--font-ar);font-size:.8rem;color:rgba(255,255,255,.7);direction:rtl;margin-top:3px;">خط صحة أبوظبي</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="ph-menu" style="display:none!important"></div>
+  </div>
+</div>
+
+<!-- FIRST AID -->
+<div id="screen-fa" class="screen">
+  <div class="game-header">
+    <div class="gh-left">
+      <button class="back-btn" onclick="goHub()">&#8592;</button>
+      <span style="font-size:1.2rem;font-weight:900;color:var(--white);">🩺 First Aid Corner &nbsp;|&nbsp; <span style="font-family:var(--font-ar)">ركن الإسعافات الأولية</span></span>
+    </div>
+    <div class="gh-right">
+      <div id="fa-idle-wrap" style="display:none;flex-direction:column;align-items:flex-end;gap:4px;">
+        <span style="font-size:.75rem;color:rgba(255,255,255,.7);font-weight:600;" id="fa-idle-label">Returning in 45s</span>
+        <div class="fa-idle-bar" style="width:160px;"><div class="fa-idle-progress" id="fa-idle-bar" style="width:100%"></div></div>
+      </div>
+    </div>
+  </div>
+  <div class="game-body" id="fa-body">
+    <div class="fa-main-layout">
+      <!-- LEFT: topic list -->
+      <div class="fa-left-panel">
+        <div class="fa-tl-label">Topics / المواضيع</div>
+        <div class="fa-tl-item" data-idx="0" onclick="faShowTopic(0)"><span class="fa-tl-icon">🩹</span><div><div class="fa-tl-en">Cuts &amp; Scrapes</div><div class="fa-tl-ar">الجروح والخدوش</div></div></div>
+        <div class="fa-tl-item" data-idx="1" onclick="faShowTopic(1)"><span class="fa-tl-icon">🔥</span><div><div class="fa-tl-en">Minor Burns</div><div class="fa-tl-ar">الحروق الخفيفة</div></div></div>
+        <div class="fa-tl-item" data-idx="2" onclick="faShowTopic(2)"><span class="fa-tl-icon">🩸</span><div><div class="fa-tl-en">Nosebleed</div><div class="fa-tl-ar">نزيف الأنف</div></div></div>
+        <div class="fa-tl-item" data-idx="3" onclick="faShowTopic(3)"><span class="fa-tl-icon">😰</span><div><div class="fa-tl-en">Choking</div><div class="fa-tl-ar">الاختناق</div></div></div>
+        <div class="fa-tl-item" data-idx="4" onclick="faShowTopic(4)"><span class="fa-tl-icon">🧰</span><div><div class="fa-tl-en">First Aid Kit</div><div class="fa-tl-ar">حقيبة الإسعافات</div></div></div>
+        <div class="fa-tl-howto">
+          <div class="fa-tl-howto-title">How to use</div>
+          <p>Tap a topic to see first aid steps / اضغط لرؤية خطوات الإسعاف</p>
+        </div>
+      </div>
+      <!-- CENTER: injected content -->
+      <div class="fa-center-panel">
+        <div id="fa-detail" class="fa-detail"></div>
+      </div>
+      <!-- RIGHT: emergency panel -->
+      <div class="fa-right-panel">
+        <div class="fa-emg-box">
+          <div style="font-size:2rem;margin-bottom:4px;">🚨</div>
+          <div class="fa-emg-num">999</div>
+          <div class="fa-emg-label">Abu Dhabi Emergency</div>
+          <div class="fa-emg-label-ar">الطوارئ — أبوظبي</div>
+        </div>
+        <div class="fa-glass-box">
+          <div class="fa-glass-label">⚡ Quick Reminders</div>
+          <div class="fa-glass-body">
+            ✋ Stay calm &amp; act fast<br>
+            🧼 Wash hands before treating<br>
+            📞 Call 999 if unsure<br>
+            🚫 Never move an injured person<br>
+            <span style="font-family:var(--font-ar);direction:rtl;display:block;margin-top:10px;color:rgba(255,255,255,.75);line-height:1.7;">ابقَ هادئاً — اغسل يديك — اتصل بـ 999 عند الشك — لا تحرّك المصاب</span>
+          </div>
+        </div>
+        <div class="fa-glass-box" style="background:rgba(183,28,28,.2);border-color:rgba(255,100,100,.3);">
+          <div class="fa-glass-label">🏥 ADPHC Note</div>
+          <div class="fa-glass-body">First aid is the first step — always seek professional medical help for serious injuries.<br><span style="font-family:var(--font-ar);direction:rtl;display:block;margin-top:8px;color:rgba(255,255,255,.75);">الإسعافات الأولية خطوة أولى — اطلب مساعدة طبية دائماً للإصابات الخطيرة</span></div>
+        </div>
+      </div>
+    </div>
+    <div id="fa-menu" style="display:none!important"></div>
+  </div>
+</div>
+
+<!-- FOOD GROUPS PATH -->
+<div id="screen-fg" class="screen">
+  <div class="game-header">
+    <div class="gh-left">
+      <button class="back-btn" onclick="goHub()">&#8592;</button>
+      <span class="game-title-en">Food Groups Path</span>
+      <span class="game-title-ar">مسار المجموعات الغذائية</span>
+    </div>
+    <div class="gh-right">
+      <button class="g-lang-btn active" id="fg-lang-en" onclick="setLang('en')">EN</button>
+      <button class="g-lang-btn" id="fg-lang-ar" onclick="setLang('ar')">ع</button>
+    </div>
+  </div>
+  <div class="game-body">
+    <div class="fg-main-layout">
+
+      <!-- TOP STRIP: How to Play -->
+      <div class="fg-how-strip">
+        <div class="fg-how-badge">
+          <span class="fg-how-badge-icon">⬡</span>
+          <div>
+            <div class="fg-how-badge-en">How to Play</div>
+            <div class="fg-how-badge-ar">كيف تلعب</div>
+          </div>
+        </div>
+        <div class="fg-how-steps">
+          <div class="fg-how-step"><div class="fg-step-num">1</div><div class="fg-step-text">Each group has 3 foods — connect them all with one path!<div class="fg-step-text-ar">كل مجموعة تحتوي على 3 أطعمة — اربطها جميعاً بمسار واحد!</div></div></div>
+          <div class="fg-how-step"><div class="fg-step-num">2</div><div class="fg-step-text">Start at an endpoint — pass through the middle food too 🌾<div class="fg-step-text-ar">ابدأ من طعام الطرف — مرّ بالوسط أيضاً</div></div></div>
+          <div class="fg-how-step"><div class="fg-step-num">3</div><div class="fg-step-text">Paths cannot cross — completed groups exit below ↓<div class="fg-step-text-ar">المسارات لا تتقاطع — تخرج من الأسفل</div></div></div>
+          <div class="fg-how-step"><div class="fg-step-num">4</div><div class="fg-step-text">Drag back over your path to erase &amp; retry<div class="fg-step-text-ar">اسحب للخلف لمسح المسار وإعادة المحاولة</div></div></div>
+        </div>
+        <div class="fg-how-prog">
+          <div class="fg-how-prog-heading">PROGRESS — التقدم</div>
+          <div class="fg-how-prog-dots" id="fg-prog-dots"></div>
+          <div class="fg-how-prog-label" id="fg-prog-label">0 / 5</div>
+        </div>
+      </div>
+
+      <!-- CENTER: Flow Puzzle -->
+      <div class="fg-center-panel">
+        <div class="fg-maze-card">
+          <div class="fg-maze-heading" id="fg-maze-heading">Connect the Food Groups!</div>
+          <div class="fg-status-row" id="fg-status-row"></div>
+          <svg id="fg-svg" viewBox="0 0 376 376" xmlns="http://www.w3.org/2000/svg" style="touch-action:none;cursor:crosshair;"></svg>
+          <div class="fg-buckets-row" id="fg-buckets"></div>
+          <div class="fg-ctrl-row">
+            <button class="fg-ctrl-btn fg-reset-btn" onclick="fgReset()">↺ Reset</button>
+            <button class="fg-ctrl-btn fg-next-btn" onclick="fgNextPuzzle()">Next Puzzle →</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT: Food Groups Reference -->
+      <div class="fg-ref-panel">
+        <div class="fg-ref-heading" id="fg-ref-heading">Food Groups — المجموعات الغذائية</div>
+        <div id="fg-ref-list"></div>
+        <div class="fg-tip-box">
+          <div class="fg-tip-label">💡 TIP / نصيحة</div>
+          <div class="fg-tip-body" id="fg-tip-body">Connect matching food emojis with a line — paths can't cross! / وصّل المجموعات الغذائية المتشابهة بخط — المسارات لا تتقاطع!</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ADMIN SCREEN -->
+<!-- ADMIN MODAL -->
+<div id="admin-modal">
+  <div class="admin-modal-box">
+    <!-- Header bar -->
+    <div class="admin-modal-hdr">
+      <div class="admin-modal-hdr-left">
+        <div class="admin-modal-hdr-dots"><span></span><span></span><span></span></div>
+        <div class="admin-modal-title">⚙ &nbsp;SEHHI // ADMIN CONSOLE</div>
+      </div>
+      <button class="admin-modal-close" onclick="adminModalClose()">✕</button>
+    </div>
+    <!-- Body -->
+    <div class="admin-modal-body">
+      <div class="admin-col-main">
+        <!-- Zone -->
+        <div class="admin-blk">
+          <div class="admin-blk-label">// DEVICE ZONE — which corner is this kiosk?</div>
+          <div class="admin-zone-grid">
+            <div class="admin-zone-btn" data-zone="1" onclick="adminPickZone(1)"><div class="zn">1</div><div class="zl">Zone 1</div></div>
+            <div class="admin-zone-btn" data-zone="2" onclick="adminPickZone(2)"><div class="zn">2</div><div class="zl">Zone 2</div></div>
+            <div class="admin-zone-btn" data-zone="3" onclick="adminPickZone(3)"><div class="zn">3</div><div class="zl">Zone 3</div></div>
+            <div class="admin-zone-btn" data-zone="4" onclick="adminPickZone(4)"><div class="zn">4</div><div class="zl">Zone 4</div></div>
+          </div>
+        </div>
+        <!-- Content -->
+        <div class="admin-blk">
+          <div class="admin-blk-label">// CONTENT — what game loads on this screen?</div>
+          <div class="admin-game-grid">
+            <div class="admin-game-btn" data-game="all" onclick="adminPickGame('all')"><div class="gi">🎮</div><div class="gn">All Games</div></div>
+            <div class="admin-game-btn" data-game="ws"  onclick="adminPickGame('ws')"><div class="gi">🔤</div><div class="gn">Word Search</div></div>
+            <div class="admin-game-btn" data-game="cw"  onclick="adminPickGame('cw')"><div class="gi">✏️</div><div class="gn">Crossword</div></div>
+            <div class="admin-game-btn" data-game="pl"  onclick="adminPickGame('pl')"><div class="gi">🍽️</div><div class="gn">Healthy Plate</div></div>
+            <div class="admin-game-btn" data-game="fa"  onclick="adminPickGame('fa')"><div class="gi">🩺</div><div class="gn">First Aid</div></div>
+            <div class="admin-game-btn" data-game="ph"  onclick="adminPickGame('ph')"><div class="gi">🏥</div><div class="gn">Public Health</div></div>
+            <div class="admin-game-btn" data-game="re"  onclick="adminPickGame('re')"><div class="gi">🌱</div><div class="gn">Resilience</div></div>
+            <div class="admin-game-btn" data-game="fg"  onclick="adminPickGame('fg')"><div class="gi">⬡</div><div class="gn">Food Path</div></div>
+            <div class="admin-game-btn" data-game="dash" onclick="adminPickGame('dash')"><div class="gi">🏃</div><div class="gn">SEHHI Dash</div></div>
+          </div>
+        </div>
+        <!-- Language -->
+        <div class="admin-blk">
+          <div class="admin-blk-label">// DEFAULT LANGUAGE</div>
+          <div class="admin-lang-row">
+            <div class="admin-lang-pick" data-lang="en" onclick="adminPickLang('en')">🇬🇧 &nbsp;English</div>
+            <div class="admin-lang-pick" data-lang="ar" onclick="adminPickLang('ar')">🇦🇪 &nbsp;عربي</div>
+          </div>
+        </div>
+        <button class="admin-save-btn" onclick="adminSave()">▶ &nbsp;SAVE &amp; LAUNCH</button>
+        <div class="admin-saved" id="admin-saved">✓ CONFIG SAVED — LAUNCHING…</div>
+      </div>
+      <!-- Side panel -->
+      <div class="admin-col-side">
+        <div class="admin-status-box">
+          <div class="admin-status-title">// LIVE CONFIG</div>
+          <div class="admin-status-row"><span class="admin-status-k">ZONE</span><span class="admin-status-v" id="admin-cur-zone">—</span></div>
+          <div class="admin-status-row"><span class="admin-status-k">GAME</span><span class="admin-status-v" id="admin-cur-game">—</span></div>
+          <div class="admin-status-row"><span class="admin-status-k">LANG</span><span class="admin-status-v" id="admin-cur-lang">—</span></div>
+        </div>
+        <div class="admin-status-box" style="font-size:.72rem;color:rgba(255,255,255,0.35);font-family:monospace;line-height:1.8;">
+          <div class="admin-status-title">// HOW TO USE</div>
+          <div>1. Pick device zone</div>
+          <div>2. Select game content</div>
+          <div>3. Set language</div>
+          <div>4. Press SAVE &amp; LAUNCH</div>
+        </div>
+        <div class="admin-status-box" style="text-align:center;">
+          <div style="font-size:.66rem;color:rgba(0,229,255,0.5);font-family:monospace;letter-spacing:1px;margin-bottom:6px;">// BUILD</div>
+          <div style="font-size:.75rem;font-family:monospace;color:rgba(255,255,255,0.3);">SEHHI v2.0</div>
+          <div style="font-size:.7rem;font-family:monospace;color:rgba(255,255,255,0.35);margin-top:6px;">Developed by Munna Kumar Thakur</div>
+          <div style="font-size:.7rem;font-family:monospace;color:rgba(255,255,255,0.2);margin-top:4px;">ADPHC © 2026</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- WIN OVERLAY -->
+<div id="win-overlay">
+  <div class="win-card">
+    <span class="win-emoji" id="win-emoji">🎉</span>
+    <div class="win-title" id="win-title">Excellent!</div>
+    <div class="win-msg" id="win-msg">You completed the challenge!</div>
+    <button class="win-btn" onclick="closeWin()" id="win-btn">Play Again</button>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div id="toast"></div>
+
+<script>
+// ═══════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════
+var LANG = localStorage.getItem('sehhi_lang') || 'en';
+var ZONE_NUM = localStorage.getItem('sehhi_zone_num') || '1';
+var ZONE_GAME = localStorage.getItem('sehhi_zone_game') || 'all';
+var CUR_SCREEN = 'home';
+
+// ═══════════════════════════════════════
+// NAVIGATION
+// ═══════════════════════════════════════
+function showScreen(id){
+  closeWin();
+  document.querySelectorAll('.screen').forEach(function(s){s.classList.remove('active');});
+  document.getElementById('screen-'+id).classList.add('active');
+  CUR_SCREEN = id;
+}
+
+function goHub(){
+  if(ZONE_GAME && ZONE_GAME!=='all'){
+    showScreen('home');
+  } else {
+    showScreen('hub');
+    refreshHub();
+  }
+}
+
+function goGame(id){
+  showScreen(id);
+  if(id==='ws') initWS();
+  else if(id==='cw') initCW();
+  else if(id==='pl') initPL();
+  else if(id==='fa') initFA();
+  else if(id==='ph') initPH();
+  else if(id==='re') initRE();
+}
+
+function homeStart(){
+  if(ZONE_GAME && ZONE_GAME!=='all'){
+    goGame(ZONE_GAME);
+  } else {
+    showScreen('hub');
+    refreshHub();
+  }
+}
+
+function refreshHub(){
+  document.getElementById('hub-zone-badge').textContent = (LANG==='ar'?'منطقة ':'Zone ')+ZONE_NUM;
+  document.getElementById('hub-title').textContent = LANG==='ar'?'اختر لعبة':'Choose a Game';
+  document.querySelectorAll('[data-en]').forEach(function(el){
+    el.textContent = LANG==='ar'? el.getAttribute('data-ar') : el.getAttribute('data-en');
+  });
+  syncLangBtns('hub');
+}
+
+// ═══════════════════════════════════════
+// LANGUAGE
+// ═══════════════════════════════════════
+function setLang(l){
+  LANG = l;
+  localStorage.setItem('sehhi_lang', l);
+  document.body.classList.toggle('ar', l==='ar');
+  document.documentElement.setAttribute('lang', l);
+  document.documentElement.setAttribute('dir', l==='ar'?'rtl':'ltr');
+  syncAllLangBtns();
+  refreshCurrentScreen();
+}
+
+function syncLangBtns(prefix){
+  var en = document.getElementById(prefix+'-lang-en');
+  var ar = document.getElementById(prefix+'-lang-ar');
+  if(en) en.classList.toggle('active', LANG==='en');
+  if(ar) ar.classList.toggle('active', LANG==='ar');
+}
+
+function syncAllLangBtns(){
+  ['hub','ws','cw','pl'].forEach(syncLangBtns);
+}
+
+function refreshCurrentScreen(){
+  if(CUR_SCREEN==='hub') refreshHub();
+  else if(CUR_SCREEN==='ws') renderWS();
+  else if(CUR_SCREEN==='cw') renderCW();
+  else if(CUR_SCREEN==='pl') renderPL();
+}
+
+// ═══════════════════════════════════════
+// HOME
+// ═══════════════════════════════════════
+function homeLang(l){
+  LANG = l;
+  localStorage.setItem('sehhi_lang', l);
+  ['en','ar'].forEach(function(lang){
+    ['home-title','home-sub','hbtn'].forEach(function(base){
+      var el=document.getElementById(base+'-'+lang);
+      if(el) el.classList.toggle('hidden', lang!==l);
+    });
+  });
+  document.getElementById('hlang-en').classList.toggle('active', l==='en');
+  document.getElementById('hlang-ar').classList.toggle('active', l==='ar');
+  var src=document.getElementById('home-video-src');
+  var vid=document.getElementById('home-video');
+  src.src='../Children_'+(l==='ar'?'Ar':'En')+'.mp4';
+  vid.load();
+  vid.play().catch(function(){});
+}
+
+(function initHome(){
+  var vid=document.getElementById('home-video');
+  vid.addEventListener('error',function(){
+    document.getElementById('home-fallback').style.display='block';
+    vid.style.display='none';
+  });
+  vid.play().catch(function(){
+    document.getElementById('home-fallback').style.display='block';
+  });
+  if(LANG==='ar') homeLang('ar');
+})();
+
+// ═══════════════════════════════════════
+// TOAST / WIN
+// ═══════════════════════════════════════
+function showToast(msg){
+  var t=document.getElementById('toast');
+  t.textContent=msg;
+  t.classList.add('show');
+  setTimeout(function(){t.classList.remove('show');},2500);
+}
+
+function showWin(emoji,title,msg){
+  document.getElementById('win-emoji').textContent=emoji||'🎉';
+  document.getElementById('win-title').textContent=title||'Excellent!';
+  document.getElementById('win-msg').textContent=msg||'';
+  document.getElementById('win-overlay').classList.add('show');
+  showWinAutoCountdown(15);
+}
+
+var winAutoTimer=null;
+
+function showWinAutoCountdown(sec){
+  clearTimeout(winAutoTimer);
+  var btn=document.getElementById('win-btn');
+  var origText=btn.textContent;
+  var remain=sec;
+  function tick(){
+    btn.textContent=(LANG==='ar'?'العب مجدداً':'Play Again')+' ('+remain+')';
+    if(remain<=0){ closeWin(); return; }
+    remain--;
+    winAutoTimer=setTimeout(tick,1000);
+  }
+  tick();
+}
+
+function closeWin(){
+  clearTimeout(winAutoTimer);
+  document.getElementById('win-overlay').classList.remove('show');
+  // restart the current game
+  var g=CUR_SCREEN;
+  if(g==='ws') initWS();
+  else if(g==='cw') initCW();
+  else if(g==='pl') initPL();
+}
+
+// ═══════════════════════════════════════
+// WORD SEARCH
+// ═══════════════════════════════════════
+var WS_DATA=[
+  {e:'🍎',en:'FRUIT',    ar:'فاكهة',   arl:['ف','ا','ك','ه','ة']},
+  {e:'🥩',en:'PROTEIN',  ar:'بروتين',  arl:['ب','ر','و','ت','ي','ن']},
+  {e:'🧀',en:'DAIRY',    ar:'ألبان',   arl:['أ','ل','ب','ا','ن']},
+  {e:'🥛',en:'MILK',     ar:'حليب',    arl:['ح','ل','ي','ب']},
+  {e:'🍊',en:'ORANGE',   ar:'برتقال',  arl:['ب','ر','ت','ق','ا','ل']},
+  {e:'🍗',en:'CHICKEN',  ar:'دجاج',    arl:['د','ج','ا','ج']},
+  {e:'🥭',en:'MANGO',    ar:'مانجو',   arl:['م','ا','ن','ج','و']},
+  {e:'🥦',en:'VEGETABLE',ar:'خضروات',  arl:['خ','ض','ر','و','ا','ت']},
+  {e:'🥒',en:'CUCUMBERS',ar:'خيار',    arl:['خ','ي','ا','ر']},
+  {e:'🌾',en:'GRAINS',   ar:'حبوب',    arl:['ح','ب','و','ب']}
+];
+var AR_FILL=['ص','ن','م','ل','ك','ج','ه','و','ي','ز','ر','ع','ت','س','ش','ق','د','ط','ث','غ'];
+var WS_SIZE=12;
+var wsDataEn,wsDataAr,wsFound=[];
+var wsSelStart=null,wsSelCells=[];
+
+function wsRandInt(n){return Math.floor(Math.random()*n);}
+
+function buildWSGrid(lang){
+  var size=WS_SIZE,grid=[];
+  for(var r=0;r<size;r++){grid.push(new Array(size).fill(''));}
+  var words=WS_DATA.map(function(w){return lang==='ar'?[...w.arl]:[...w.en];});
+  var placed=[];
+  words.forEach(function(letters){
+    var attempts=0,ok=false,cells=[];
+    while(!ok&&attempts<200){
+      attempts++;
+      var dr=0,dc=0,r,c;
+      var dir=wsRandInt(3);
+      if(dir===0){dr=0;dc=1;r=wsRandInt(size);c=wsRandInt(size-letters.length+1);}
+      else if(dir===1){dr=1;dc=0;r=wsRandInt(size-letters.length+1);c=wsRandInt(size);}
+      else{dr=1;dc=1;r=wsRandInt(size-letters.length+1);c=wsRandInt(size-letters.length+1);}
+      var fits=true;
+      for(var i=0;i<letters.length;i++){
+        var nr=r+dr*i,nc=c+dc*i;
+        if(nr<0||nr>=size||nc<0||nc>=size){fits=false;break;}
+        if(grid[nr][nc]!==''&&grid[nr][nc]!==letters[i]){fits=false;break;}
+      }
+      if(fits){
+        ok=true;cells=[];
+        for(var i=0;i<letters.length;i++){
+          grid[r+dr*i][c+dc*i]=letters[i];
+          cells.push([r+dr*i,c+dc*i]);
+        }
+      }
+    }
+    placed.push(cells);
+  });
+  var fillArr=lang==='ar'?AR_FILL:'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+  for(var r=0;r<size;r++)for(var c=0;c<size;c++)if(!grid[r][c])grid[r][c]=fillArr[wsRandInt(fillArr.length)];
+  return {grid:grid,placed:placed};
+}
+
+function initWS(){
+  wsDataEn=buildWSGrid('en');
+  wsDataAr=buildWSGrid('ar');
+  wsFound=new Array(WS_DATA.length).fill(false);
+  wsSelStart=null;wsSelCells=[];
+  renderWS();
+}
+
+var WS_WORD_COLORS=['#E91E63','#9C27B0','#1976D2','#00897B','#F57F17','#D84315','#2E7D32','#AD1457','#0288D1','#5D4037'];
+
+function renderWS(){
+  syncLangBtns('ws');
+  document.getElementById('ws-grid-title').textContent=LANG==='ar'?'ابحث عن الكلمات':'Find the Words';
+  document.getElementById('ws-words-title').textContent=LANG==='ar'?'الكلمات المطلوبة':'Words to Find';
+  document.getElementById('ws-check-btn').textContent=LANG==='ar'?'تحقق ✓':'Check Answers ✓';
+  renderWSGrid('en');
+  renderWSGrid('ar');
+  document.getElementById('ws-grid-en').style.display=LANG==='ar'?'none':'inline-grid';
+  document.getElementById('ws-grid-ar').style.display=LANG==='ar'?'inline-grid':'none';
+  renderWSWords();
+  updateWSProgress();
+}
+
+function renderWSGrid(lang){
+  var data=lang==='ar'?wsDataAr:wsDataEn;
+  var el=document.getElementById('ws-grid-'+lang);
+  el.innerHTML='';
+  el.style.gridTemplateColumns='repeat('+WS_SIZE+',54px)';
+  if(!data)return;
+  for(var r=0;r<WS_SIZE;r++){
+    for(var c=0;c<WS_SIZE;c++){
+      var cell=document.createElement('div');
+      cell.className='ws-cell';
+      cell.style.setProperty('--ci', r*WS_SIZE+c);
+      cell.textContent=data.grid[r][c];
+      cell.dataset.r=r;cell.dataset.c=c;cell.dataset.lang=lang;
+      // Re-apply found color if already found
+      WS_DATA.forEach(function(w,i){
+        if(wsFound[i]&&data.placed[i]){
+          data.placed[i].forEach(function(pos){
+            if(pos[0]===r&&pos[1]===c){cell.classList.add('found');cell.style.background=WS_WORD_COLORS[i%WS_WORD_COLORS.length];}
+          });
+        }
+      });
+      cell.addEventListener('pointerdown',wsDown);
+      cell.addEventListener('pointermove',wsMove);
+      cell.addEventListener('pointerup',wsUp);
+      el.appendChild(cell);
+    }
+  }
+}
+
+function renderWSWords(){
+  var el=document.getElementById('ws-word-list');
+  el.innerHTML='';
+  WS_DATA.forEach(function(w,i){
+    var div=document.createElement('div');
+    div.className='ws-word-item'+(wsFound[i]?' done':'');
+    if(wsFound[i]){
+      var col=WS_WORD_COLORS[i%WS_WORD_COLORS.length];
+      div.style.borderColor=col;
+      div.style.borderWidth='2px';
+      div.innerHTML='<span class="wi-emoji">'+w.e+'</span>'+
+        '<span style="flex:1;font-weight:800;color:'+col+'">'+(LANG==='ar'?w.ar:w.en)+'</span>'+
+        '<span style="color:'+col+';font-size:1.2rem;font-weight:900;">✓</span>';
+    } else {
+      div.innerHTML='<span class="wi-emoji">'+w.e+'</span>'+
+        '<span style="flex:1">'+(LANG==='ar'?w.ar:w.en)+'</span>'+
+        '<span style="opacity:.35;font-size:.75rem;">○</span>';
+    }
+    el.appendChild(div);
+  });
+  updateWSProgress();
+}
+
+function updateWSProgress(){
+  var total=WS_DATA.length, found=wsFound.filter(Boolean).length;
+  var pct=(found/total*100).toFixed(0);
+  var bar=document.getElementById('ws-prog-bar');
+  var label=document.getElementById('ws-prog-label');
+  var emoji=document.getElementById('ws-prog-emoji');
+  if(bar) bar.style.width=pct+'%';
+  if(label) label.textContent=found+' / '+total+(LANG==='ar'?' كلمة':' words');
+  if(emoji) emoji.textContent=found===0?'🔍':found===total?'🏆 ':found>=total/2?'🔥':'⚡';
+}
+
+function wsDown(e){
+  e.preventDefault();
+  wsSelStart={r:+e.currentTarget.dataset.r,c:+e.currentTarget.dataset.c,lang:e.currentTarget.dataset.lang};
+  wsSelCells=[[wsSelStart.r,wsSelStart.c]];
+  e.currentTarget.classList.add('hi');
+  e.currentTarget.setPointerCapture(e.pointerId);
+}
+
+function wsMove(e){
+  if(!wsSelStart)return;
+  e.preventDefault();
+  var lang=wsSelStart.lang;
+  var grid=document.getElementById('ws-grid-'+lang);
+  var target=document.elementFromPoint(e.clientX,e.clientY);
+  if(!target||!target.classList.contains('ws-cell')||target.dataset.lang!==lang)return;
+  var er=+target.dataset.r,ec=+target.dataset.c;
+  var sr=wsSelStart.r,sc=wsSelStart.c;
+  var dr=er-sr,dc=ec-sc;
+  var len=Math.max(Math.abs(dr),Math.abs(dc));
+  var newCells=[];
+  if(len===0){newCells=[[sr,sc]];}
+  else if(dr===0||dc===0||Math.abs(dr)===Math.abs(dc)){
+    var rstep=dr?dr/Math.abs(dr):0,cstep=dc?dc/Math.abs(dc):0;
+    for(var i=0;i<=len;i++)newCells.push([sr+rstep*i,sc+cstep*i]);
+  } else return;
+  wsClearHi();
+  wsSelCells=newCells;
+  newCells.forEach(function(pos){
+    var cell=grid.querySelector('[data-r="'+pos[0]+'"][data-c="'+pos[1]+'"]');
+    if(cell&&!cell.classList.contains('found'))cell.classList.add('hi');
+  });
+}
+
+function wsUp(e){
+  if(!wsSelStart)return;
+  wsCheckSel();
+  wsSelStart=null;wsSelCells=[];
+  wsClearHi();
+}
+
+function wsClearHi(){
+  var lang=wsSelStart?wsSelStart.lang:LANG;
+  var grid=document.getElementById('ws-grid-'+lang);
+  if(grid) grid.querySelectorAll('.ws-cell.hi').forEach(function(c){c.classList.remove('hi');});
+}
+
+function wsCheckSel(){
+  if(wsSelCells.length<2)return;
+  var lang=wsSelStart?wsSelStart.lang:LANG;
+  var data=lang==='ar'?wsDataAr:wsDataEn;
+  var letters=wsSelCells.map(function(pos){return data.grid[pos[0]][pos[1]];});
+  var str=letters.join('');
+  var strRev=letters.slice().reverse().join('');
+  WS_DATA.forEach(function(w,i){
+    if(wsFound[i])return;
+    var target=lang==='ar'?w.arl.join(''):w.en;
+    if(str===target||strRev===target){
+      wsFound[i]=true;
+      var placed=data.placed[i];
+      var gridEl=document.getElementById('ws-grid-'+lang);
+      var wordColor=WS_WORD_COLORS[i%WS_WORD_COLORS.length];
+      if(placed&&placed.length){
+        placed.forEach(function(pos,pi){
+          setTimeout(function(){
+            var cell=gridEl.querySelector('[data-r="'+pos[0]+'"][data-c="'+pos[1]+'"]');
+            if(cell){
+              cell.classList.remove('hi');
+              cell.classList.add('found');
+              cell.style.background=wordColor;
+              cell.style.boxShadow='0 0 14px '+wordColor+'88';
+              cell.style.animation='none';
+              void cell.offsetWidth;
+              cell.style.animation='wsFound .45s cubic-bezier(.34,1.56,.64,1)';
+            }
+          }, pi*45);
+        });
+      }
+      setTimeout(function(){
+        renderWSWords();
+        confettiBurst(window.innerWidth/2, window.innerHeight/2, 18);
+      }, placed.length*45+60);
+      showToast(w.e+' '+(lang==='ar'?w.ar:w.en)+'!');
+    }
+  });
+}
+
+function wsCheck(){
+  var total=WS_DATA.length,found=wsFound.filter(Boolean).length;
+  if(found===total){
+    showWin('🔤',LANG==='ar'?'ممتاز!':'Excellent!',LANG==='ar'?'وجدت جميع الكلمات!':'You found all the words!');
+  } else {
+    showToast((LANG==='ar'?'وجدت ':'Found ')+found+' / '+total);
+  }
+}
+
+// ═══════════════════════════════════════
+// CROSSWORD
+// ═══════════════════════════════════════
+var CW_EN_DATA=[
+  {word:'LETTUCE',emoji:'🥬',row:0,startCol:2,len:7,clue:{en:'A green leafy vegetable often used in salads',ar:'خضار أخضر ورقي يستخدم في السلطات'}},
+  {word:'SALAD',  emoji:'🥗',row:1,startCol:3,len:5,clue:{en:'A dish made of fresh vegetables',ar:'طبق مصنوع من الخضار الطازجة'}},
+  {word:'CHEESE', emoji:'🧀',row:2,startCol:0,len:6,clue:{en:'A dairy food often used in sandwiches',ar:'طعام من منتجات الألبان يستخدم في السندويشات'}},
+  {word:'VITAMIN',emoji:'💊',row:3,startCol:2,len:7,clue:{en:'A nutrient that helps your body fight germs',ar:'مغذٍّ يساعد جسمك على محاربة الجراثيم'}},
+  {word:'HONEY',  emoji:'🍯',row:4,startCol:1,len:5,clue:{en:'A sweet nutritious liquid from bees',ar:'سائل حلو مغذٍّ يأتي من النحل'}}
+];
+var CW_EN_SCOL=4,CW_EN_ROWS=5,CW_EN_COLS=9,CW_EN_SECRET='TASTE',CW_EN_SECRET_AR='مذاق';
+
+var CW_AR_DATA=[
+  {letters:['ج','ز','ر'],   emoji:'🥕',row:0,startCol:3,len:3,clue:{ar:'خضار برتقالي يقوي البصر وغني بفيتامين أ',en:'An orange vegetable rich in vitamin A'}},
+  {letters:['ب','ط','ي','خ'],emoji:'🍉',row:1,startCol:2,len:4,clue:{ar:'فاكهة منعشة في الصيف قشرتها خضراء ولونها أحمر',en:'A refreshing summer fruit, green outside red inside'}},
+  {letters:['ز','ي','ت'],   emoji:'🫒',row:2,startCol:2,len:3,clue:{ar:'سائل دهني صحي يستخرج من الزيتون',en:'A healthy oil extracted from olives'}},
+  {letters:['م','و','ز'],   emoji:'🍌',row:3,startCol:3,len:3,clue:{ar:'فاكهة صفراء غنية بالبوتاسيوم',en:'A yellow fruit rich in potassium'}},
+  {letters:['ع','ن','ب'],   emoji:'🍇',row:4,startCol:3,len:3,clue:{ar:'فاكهة صغيرة حلوة تنمو في عناقيد',en:'Small sweet fruit growing in clusters'}}
+];
+var CW_AR_ROWS=5,CW_AR_COLS=9,CW_AR_SCOL=4,CW_AR_SECRET='زيتون',CW_AR_SECRET_EN='Olive';
+
+var cwUserAnswers={};
+
+function initCW(){cwUserAnswers={};renderCW();}
+
+function renderCW(){
+  syncLangBtns('cw');
+  var isAr=LANG==='ar';
+  document.getElementById('cw-grid-en').style.display=isAr?'none':'inline-grid';
+  document.getElementById('cw-grid-ar').style.display=isAr?'inline-grid':'none';
+  document.getElementById('cw-check-btn').textContent=isAr?'تحقق ✓':'Check Answers ✓';
+  document.getElementById('cw-clue-title').textContent=isAr?'التلميحات':'Clues';
+  document.getElementById('cw-secret-label').textContent=isAr?'الكلمة السرية':'Secret Word';
+  buildCWGrid(isAr?'ar':'en');
+  buildCWClues(isAr?'ar':'en');
+  buildCWSecret(isAr?'ar':'en');
+}
+
+function buildCWGrid(lang){
+  var el=document.getElementById('cw-grid-'+lang);
+  el.innerHTML='';
+  var data=lang==='ar'?CW_AR_DATA:CW_EN_DATA;
+  var rows=lang==='ar'?CW_AR_ROWS:CW_EN_ROWS;
+  var cols=lang==='ar'?CW_AR_COLS:CW_EN_COLS;
+  var scol=lang==='ar'?CW_AR_SCOL:CW_EN_SCOL;
+  el.style.gridTemplateColumns='repeat('+cols+',62px)';
+  var map={};
+  data.forEach(function(w,wi){
+    var letters=lang==='ar'?w.letters:[...w.word];
+    for(var i=0;i<letters.length;i++){
+      var r=w.row,c=w.startCol+i;
+      if(!map[r])map[r]={};
+      map[r][c]={letter:letters[i],wi:wi,ci:i,isSecret:(c===scol)};
+    }
+  });
+  for(var r=0;r<rows;r++){
+    for(var c=0;c<cols;c++){
+      var td=document.createElement('div');
+      td.className='cw-cell';
+      td.dataset.row=r;
+      if(map[r]&&map[r][c]){
+        var info=map[r][c];
+        td.classList.add(info.isSecret?'secret-cell':'input-cell');
+        td.style.setProperty('--ri', r);
+        var inp=document.createElement('input');
+        inp.type='text';inp.maxLength=1;
+        inp.dataset.r=r;inp.dataset.c=c;inp.dataset.wi=info.wi;inp.dataset.ci=info.ci;inp.dataset.lang=lang;
+        var key=lang+'_'+r+'_'+c;
+        if(cwUserAnswers[key])inp.value=cwUserAnswers[key];
+        inp.addEventListener('input',function(e){
+          var k=e.target.dataset.lang+'_'+e.target.dataset.r+'_'+e.target.dataset.c;
+          cwUserAnswers[k]=(e.target.value||'').toUpperCase();
+          e.target.value=cwUserAnswers[k];
+          // auto-advance to next cell in same row
+          var nextC=+e.target.dataset.c+1;
+          var nextInp=document.querySelector('#cw-grid-'+e.target.dataset.lang+' input[data-r="'+e.target.dataset.r+'"][data-c="'+nextC+'"]');
+          if(nextInp && cwUserAnswers[k]) nextInp.focus();
+        });
+        inp.addEventListener('keydown',function(e){
+          if(e.key==='Backspace'&&!e.target.value){
+            var prevC=+e.target.dataset.c-1;
+            var prevInp=document.querySelector('#cw-grid-'+e.target.dataset.lang+' input[data-r="'+e.target.dataset.r+'"][data-c="'+prevC+'"]');
+            if(prevInp){prevInp.focus();prevInp.select();}
+          }
+        });
+        td.appendChild(inp);
+      } else {
+        td.classList.add('empty');
+      }
+      el.appendChild(td);
+    }
+  }
+}
+
+var cwWordCorrect=[];
+function buildCWClues(lang){
+  var el=document.getElementById('cw-clue-list');
+  el.innerHTML='';
+  var data=lang==='ar'?CW_AR_DATA:CW_EN_DATA;
+  data.forEach(function(w,i){
+    var div=document.createElement('div');
+    div.className='cw-clue-item'+(cwWordCorrect[i]?' done':'');
+    div.style.animationDelay=(i*.06)+'s';
+    div.innerHTML=
+      '<div class="cw-clue-num">'+(cwWordCorrect[i]?'✓':(i+1))+'</div>'+
+      '<span class="cw-clue-emoji">'+w.emoji+'</span>'+
+      '<span class="cw-clue-text">'+w.clue[lang]+'</span>'+
+      '<span class="cw-clue-check">✓</span>';
+    (function(row,idx){
+      div.onclick=function(){
+        // highlight row in grid
+        var gridEl=document.getElementById('cw-grid-'+lang);
+        gridEl.querySelectorAll('.cw-row-active').forEach(function(c){c.classList.remove('cw-row-active');});
+        gridEl.querySelectorAll('[data-row="'+row+'"]').forEach(function(c){c.classList.add('cw-row-active');});
+        // focus first input in that row
+        var firstInp=gridEl.querySelector('input[data-r="'+row+'"]');
+        if(firstInp){firstInp.focus();firstInp.select();}
+        // mark active clue
+        document.querySelectorAll('.cw-clue-item').forEach(function(c){c.classList.remove('active');});
+        this.classList.add('active');
+        setTimeout(function(){
+          gridEl.querySelectorAll('.cw-row-active').forEach(function(c){c.classList.remove('cw-row-active');});
+        },2000);
+      };
+    })(w.row, i);
+    el.appendChild(div);
+  });
+  updateCWProgress();
+}
+
+function updateCWProgress(){
+  var total=cwWordCorrect.length||5, done=cwWordCorrect.filter(Boolean).length;
+  var pct=(done/total*100).toFixed(0);
+  var bar=document.getElementById('cw-prog-bar');
+  var label=document.getElementById('cw-prog-label');
+  var emoji=document.getElementById('cw-prog-emoji');
+  if(bar) bar.style.width=pct+'%';
+  if(label) label.textContent=done+' / '+total+(LANG==='ar'?' تلميحات':' clues');
+  if(emoji) emoji.textContent=done===0?'✏️':done===total?'🏆':done>=total/2?'🔥':'⚡';
+}
+
+function buildCWSecret(lang){
+  var secret=lang==='ar'?CW_AR_SECRET:CW_EN_SECRET;
+  var el=document.getElementById('cw-secret-boxes');
+  el.innerHTML='';
+  [...secret].forEach(function(){
+    var box=document.createElement('div');
+    box.className='cw-sbox';box.textContent='?';
+    el.appendChild(box);
+  });
+  document.getElementById('cw-secret-reveal').style.display='none';
+}
+
+function cwCheck(){
+  var lang=LANG==='ar'?'ar':'en';
+  var data=lang==='ar'?CW_AR_DATA:CW_EN_DATA;
+  var scol=lang==='ar'?CW_AR_SCOL:CW_EN_SCOL;
+  var inputs=document.querySelectorAll('#cw-grid-'+lang+' input');
+  var allCorrect=true,secretLetters={};
+  // Track per-word correctness
+  cwWordCorrect=new Array(data.length).fill(true);
+  inputs.forEach(function(inp){
+    var r=+inp.dataset.r,c=+inp.dataset.c,wi=+inp.dataset.wi,ci=+inp.dataset.ci;
+    var w=data[wi];
+    var letters=lang==='ar'?w.letters:[...w.word];
+    var correct=(inp.value||'').toUpperCase()===letters[ci].toUpperCase();
+    var cell=inp.parentElement;
+    cell.classList.toggle('correct',correct);
+    cell.classList.toggle('wrong',!correct);
+    if(!correct){ allCorrect=false; cwWordCorrect[wi]=false; }
+    if(c===scol)secretLetters[r]=correct?letters[ci]:'?';
+    // re-trigger animation
+    if(!correct){
+      cell.style.animation='none'; void cell.offsetWidth;
+      cell.style.animation='cwShake .4s ease';
+    } else {
+      cell.style.animation='none'; void cell.offsetWidth;
+      cell.style.animation='cwCorrect .5s cubic-bezier(.34,1.56,.64,1)';
+    }
+  });
+  // Update clues done state
+  buildCWClues(lang);
+  // Reveal secret boxes with stagger
+  var secret=lang==='ar'?CW_AR_SECRET:CW_EN_SECRET;
+  var boxes=document.querySelectorAll('#cw-secret-boxes .cw-sbox');
+  var secretAllCorrect=true;
+  [...secret].forEach(function(ch,i){
+    var letter=secretLetters[i]||'?';
+    if(letter==='?')secretAllCorrect=false;
+    setTimeout(function(){
+      if(boxes[i]){
+        boxes[i].textContent=letter;
+        boxes[i].classList.add('revealed');
+        if(letter!=='?'){boxes[i].style.background='#FFF176';boxes[i].style.borderColor='#F9A825';}
+      }
+    }, i*120);
+  });
+  if(allCorrect){
+    setTimeout(function(){
+      document.getElementById('cw-secret-reveal').style.display='block';
+      document.getElementById('cw-secret-reveal').innerHTML='🎉 '+(lang==='ar'?'الكلمة السرية: ':'Secret word: ')+'<strong>'+secret+'</strong>!';
+      confettiBurst(window.innerWidth/2, window.innerHeight/2, 40);
+      showWin('✏️',LANG==='ar'?'ممتاز!':'Excellent!',LANG==='ar'?'أجبت على جميع الكلمات!':'You solved the crossword!');
+    }, [...secret].length*120+200);
+  } else {
+    showToast(LANG==='ar'?'حاول مجدداً!':'Keep trying!');
+  }
+}
+
+// ═══════════════════════════════════════
+// PLATE BUILDER
+// ═══════════════════════════════════════
+var PL_GROUPS=[
+  {id:'protein', color:'#9C27B0',en:'Protein',   ar:'البروتين',
+   benefitEn:'Builds strong muscles! 💪',benefitAr:'يبني العضلات القوية! 💪',
+   emoji:['🥩','🍗','🐟','🥚'],names:['Meat','Chicken','Fish','Eggs'],namesAr:['لحم','دجاج','سمك','بيض']},
+  {id:'vegetable',color:'#4CAF50',en:'Vegetable',ar:'الخضار',
+   benefitEn:'Full of vitamins & fibre! 🌿',benefitAr:'غنية بالفيتامينات والألياف! 🌿',
+   emoji:['🥦','🥒','🫑','🥕'],names:['Broccoli','Cucumber','Pepper','Carrot'],namesAr:['بروكلي','خيار','فلفل','جزر']},
+  {id:'fruits',  color:'#FF5722',en:'Fruits',    ar:'الفاكهة',
+   benefitEn:'Boosts your energy! ⚡',benefitAr:'يمنحك طاقة وحيوية! ⚡',
+   emoji:['🍎','🍌','🥭','🍓'],names:['Apple','Banana','Mango','Strawberry'],namesAr:['تفاح','موز','مانجو','فراولة']},
+  {id:'grains',  color:'#F9A825',en:'Grains',    ar:'الحبوب',
+   benefitEn:'Gives you power all day! ☀️',benefitAr:'يمنحك قوة طوال اليوم! ☀️',
+   emoji:['🍞','🍚','🥣','🌽'],names:['Bread','Rice','Oats','Corn'],namesAr:['خبز','أرز','شوفان','ذرة']},
+  {id:'dairy',   color:'#2196F3',en:'Dairy',     ar:'منتجات الألبان',
+   benefitEn:'Makes bones & teeth strong! 🦷',benefitAr:'يقوّي العظام والأسنان! 🦷',
+   emoji:['🥛','🧀','🍦','🧈'],names:['Milk','Cheese','Yogurt','Butter'],namesAr:['حليب','جبنة','زبادي','زبدة']}
+];
+var PL_SLOTS=[{top:'19%',left:'47%'},{top:'39%',left:'73%'},{top:'69%',left:'63%'},{top:'69%',left:'31%'},{top:'39%',left:'21%'}];
+var plSel=[null,null,null,null,null];
+
+function initPL(){plSel=[null,null,null,null,null];renderPL();}
+
+function renderPL(){
+  syncLangBtns('pl');
+  document.getElementById('pl-submit-btn').textContent=LANG==='ar'?'تحقق من طبقي ✓':'Check My Plate ✓';
+  document.getElementById('pl-benefit-placeholder').textContent=LANG==='ar'?'اختر طعاماً لرؤية فائدته! 🌟':'Pick a food to see its benefit! 🌟';
+  document.getElementById('pl-plate-heading').textContent=LANG==='ar'?'ابنِ طبقك الصحي!':'Build Your Healthy Plate!';
+  document.getElementById('pl-groups-title').textContent=LANG==='ar'?'المجموعات الغذائية':'Food Groups — المجموعات الغذائية';
+  document.getElementById('pl-prog-label').textContent='0 / 5 '+(LANG==='ar'?'مجموعات':'groups');
+  renderPLSlots();
+  renderPLGroups();
+  updatePLProgress();
+}
+
+var PL_FILLED=['#CE93D8','#A5D6A7','#FFAB91','#FFF176','#90CAF9'];
+var PL_EMPTY=['#F3E5F5','#E8F5E9','#FFF3E0','#FFFDE7','#E3F2FD'];
+function renderPLSlots(){
+  PL_GROUPS.forEach(function(g,i){
+    var slice=document.getElementById('pl-slice-'+i);
+    var emo=document.getElementById('pl-emoji-'+i);
+    var lbl=document.getElementById('pl-label-'+i);
+    if(!slice) return;
+    if(plSel[i]){
+      slice.setAttribute('fill',PL_FILLED[i]);
+      emo.textContent=plSel[i];
+      emo.setAttribute('opacity','1');
+      emo.setAttribute('font-size','44');
+      if(lbl){lbl.setAttribute('opacity','1');lbl.setAttribute('font-size','13');}
+    } else {
+      slice.setAttribute('fill',PL_EMPTY[i]);
+      emo.textContent=g.emoji[0];
+      emo.setAttribute('opacity','0.22');
+      emo.setAttribute('font-size','36');
+      if(lbl){lbl.setAttribute('opacity','0.6');}
+    }
+    slice.onclick=function(){
+      if(plSel[i]){plSel[i]=null;renderPLSlots();renderPLGroups();updatePLProgress();}
+    };
+  });
+}
+
+function updatePLProgress(){
+  var filled=plSel.filter(Boolean).length;
+  var total=PL_SLOTS.length;
+  var pct=(filled/total*100).toFixed(0);
+  var bar=document.getElementById('pl-prog-bar');
+  var label=document.getElementById('pl-prog-label');
+  if(bar) bar.style.width=pct+'%';
+  if(label) label.textContent=filled+' / '+total+' '+(LANG==='ar'?'مجموعات':'groups');
+  // Progress dots
+  var dotsEl=document.getElementById('pl-prog-dots');
+  if(dotsEl){
+    dotsEl.innerHTML='';
+    PL_GROUPS.forEach(function(g,i){
+      var dot=document.createElement('div');
+      dot.className='pl-prog-dot'+(plSel[i]?' filled':'');
+      dot.textContent=plSel[i]||g.emoji[0];
+      if(plSel[i]) dot.style.background=g.color;
+      dotsEl.appendChild(dot);
+    });
+  }
+}
+
+function renderPLGroups(){
+  var el=document.getElementById('pl-food-groups');
+  el.innerHTML='';
+  PL_GROUPS.forEach(function(g,gi){
+    var grp=document.createElement('div');
+    grp.className='pl-food-group';
+    grp.style.borderColor=plSel[gi]?g.color:'rgba(255,255,255,.15)';
+    if(plSel[gi]) grp.style.background='rgba(255,255,255,.15)';
+    var doneHtml=plSel[gi]?'<span class="pl-group-done visible">✓</span>':'<span class="pl-group-done"></span>';
+    grp.innerHTML=
+      '<div class="pl-group-label" style="background:'+g.color+'22">'+
+        '<span class="pl-group-icon">'+g.emoji[0]+'</span>'+
+        '<span style="flex:1;">'+(LANG==='ar'?g.ar:g.en)+'</span>'+
+        doneHtml+
+      '</div>'+
+      '<div class="pl-foods" id="pl-foods-'+gi+'"></div>';
+    el.appendChild(grp);
+    var foodsEl=document.getElementById('pl-foods-'+gi);
+    var names=LANG==='ar'?g.namesAr:g.names;
+    g.emoji.forEach(function(em,fi){
+      var btn=document.createElement('div');
+      btn.className='pl-food-btn'+(plSel[gi]===em?' sel':'');
+      btn.style.animationDelay=(fi*.06)+'s';
+      if(plSel[gi]===em){
+        btn.style.borderColor=g.color;
+        btn.style.background=g.color+'22';
+      }
+      btn.innerHTML='<span class="pf-emoji">'+em+'</span><span class="pf-name">'+names[fi]+'</span>';
+      (function(group,emoji,idx){
+        btn.addEventListener('click',function(e){
+          plSel[idx]=emoji;
+          renderPLSlots();
+          renderPLGroups();
+          updatePLProgress();
+          var bt=document.getElementById('pl-benefit-text');
+          var bp=document.getElementById('pl-benefit-placeholder');
+          bt.textContent=LANG==='ar'?group.benefitAr:group.benefitEn;
+          bt.style.display='none'; void bt.offsetWidth; bt.style.display='';
+          bt.classList.add('show');
+          if(bp) bp.style.display='none';
+          confettiBurst(e.clientX,e.clientY,14);
+        });
+      })(g,em,gi);
+      foodsEl.appendChild(btn);
+    });
+  });
+}
+
+function plSubmit(){
+  var filled=plSel.filter(Boolean).length;
+  if(filled<5){showToast(LANG==='ar'?'اختر طعاماً من كل مجموعة!':'Choose food from every group!');return;}
+  showWin('🍽️',LANG==='ar'?'طبق صحي رائع!':'Healthy Plate!',LANG==='ar'?'لقد بنيت طبقاً صحياً متكاملاً!':'You built a complete healthy plate!');
+}
+// ═══════════════════════════════════════
+// RIPPLE + INTERACTION SYSTEM
+// ═══════════════════════════════════════
+document.addEventListener('pointerdown', function(e){
+  var el = e.target.closest('.hub-card,.fa-topic-card,.re-topic-card,.fa-back-btn,.re-back-btn,.re-sel-card,.re-skill-card,.re-grat-card,.re-emotion-btn,.re-root-node,.re-yet-card,.re-flip-card,.re-mindset-item,.back-btn,.btn,.hub-start-btn');
+  if(!el) return;
+  var r = document.createElement('span');
+  r.className = 'ripple';
+  var rect = el.getBoundingClientRect();
+  var size = Math.max(rect.width, rect.height);
+  r.style.cssText = 'width:'+size+'px;height:'+size+'px;left:'+(e.clientX-rect.left-size/2)+'px;top:'+(e.clientY-rect.top-size/2)+'px;';
+  el.style.position = el.style.position || 'relative';
+  el.appendChild(r);
+  r.addEventListener('animationend', function(){ r.remove(); });
+});
+
+// Confetti burst
+function confettiBurst(x, y, count){
+  count = count || 20;
+  var colors=['#F7941D','#00A99D','#4CAF50','#E91E63','#9C27B0','#FFEB3B','#03A9F4'];
+  for(var i=0;i<count;i++){
+    var p=document.createElement('div');
+    p.className='confetti-piece';
+    p.style.left=(x||window.innerWidth/2)+((Math.random()-.5)*200)+'px';
+    p.style.top=(y||window.innerHeight/2)+'px';
+    p.style.background=colors[Math.floor(Math.random()*colors.length)];
+    p.style.transform='rotate('+(Math.random()*360)+'deg)';
+    p.style.animationDelay=(Math.random()*.3)+'s';
+    p.style.animationDuration=(.8+Math.random()*.6)+'s';
+    p.style.width=(6+Math.random()*8)+'px';
+    p.style.height=(6+Math.random()*8)+'px';
+    document.body.appendChild(p);
+    p.addEventListener('animationend',function(){p.remove();});
+  }
+}
+
+// ═══════════════════════════════════════
+// RESILIENCE
+// ═══════════════════════════════════════
+var RE_TOPICS = [
+  { emoji:'🧒', color:'#F57F17', en:'About Me', ar:'عَنّي' },
+  { emoji:'🌳', color:'#5D4037', en:'Perseverance', ar:'المثابرة' },
+  { emoji:'📚', color:'#1565C0', en:'Learning Mindset', ar:'عقلية التعلم' },
+  { emoji:'🧠', color:'#2E7D32', en:'Growth Mindset', ar:'عقلية النمو' },
+  { emoji:'💬', color:'#AD1457', en:'Positive Self-Talk', ar:'الحديث الإيجابي' },
+  { emoji:'😊', color:'#F9A825', en:'Feelings & Emotions', ar:'المشاعر والأحاسيس' },
+  { emoji:'🌸', color:'#6A1B9A', en:'Gratitude', ar:'الامتنان' }
+];
+
+var reIdleInterval=null, reIdleRemain=0;
+function initRE(){ reShowMenu(); }
+
+function reShowMenu(){ reShowTopic(0); }
+function reShowMenu_legacy(){
+  document.getElementById('re-idle-wrap').style.display='none';
+  reStopIdle();
+}
+
+function reShowTopic(idx){
+  if(!RE_TOPICS||!RE_TOPICS[idx]) return;
+  document.querySelectorAll('.re-tl-item').forEach(function(el){el.classList.remove('active');});
+  var li=document.querySelector('.re-tl-item[data-idx="'+idx+'"]');
+  if(li) li.classList.add('active');
+  var t=RE_TOPICS[idx];
+  var col=t.color;
+  var detail=document.getElementById('re-detail');
+  detail.innerHTML='';
+
+  // Header
+  var hdr=document.createElement('div');
+  hdr.className='fa-detail-header';
+  hdr.style.borderLeft='6px solid '+col;
+  hdr.innerHTML='<div class="fa-detail-icon">'+t.emoji+'</div>'+
+    '<div class="fa-detail-title">'+
+      '<div class="fa-detail-title-en">'+t.en+'</div>'+
+      '<div class="fa-detail-title-ar">'+t.ar+'</div>'+
+    '</div>';
+  detail.appendChild(hdr);
+
+  // Render topic content
+  var renderers=[reRender0,reRender1,reRender2,reRender3,reRender4,reRender5,reRender6];
+  renderers[idx](detail, col);
+  reStartIdle();
+}
+
+// ─── Topic 0: About Me ───
+function reRender0(el, col){
+  var body=document.createElement('div');
+  body.className='fa-body';
+
+  // Left: Profile display
+  var left=document.createElement('div');
+  left.className='fa-steps-col';
+  left.style.flex='1';
+  left.innerHTML='<div class="re-section-title">Each of us is unique — ما الذي يميزني؟</div>'+
+    '<div style="text-align:center;font-size:4rem;margin:12px 0">🧒</div>'+
+    ['عمري / My age:','مكاني المفضل / Favorite place:','أنا أحب نفسي لأن / I love myself because:','أنا أتحسن في / I am getting better at:','اللعبة المفضلة / Favorite game:','أريد أن أتعلم / I want to learn:']
+    .map(function(q){ return '<div style="background:#fafafa;border-radius:12px;padding:10px 14px;margin-bottom:8px;font-size:.82rem;font-weight:700;color:var(--text-mid);border-left:4px solid '+col+'">'+q+'</div>'; }).join('');
+  body.appendChild(left);
+
+  // Right: Tap abilities
+  var right=document.createElement('div');
+  right.className='fa-right-col';
+  right.style.flex='1.2';
+  right.innerHTML='<div class="re-section-title">⭐ My Unique Abilities — قدراتي الفريدة</div>'+
+    '<div style="font-size:.75rem;color:var(--text-mid);font-weight:600;margin-bottom:10px;">Tap the abilities that describe you! / اضغط على قدراتك!</div>';
+  var grid=document.createElement('div');
+  grid.className='re-select-grid';
+  var abilities=[
+    {en:'I say kind words',ar:'أقول كلمات لطيفة',icon:'💬'},
+    {en:'I can imagine things',ar:'يمكنني أن أتخيل',icon:'💭'},
+    {en:'I never give up',ar:'أحاول ولا أستسلم',icon:'💪'},
+    {en:'I have humor',ar:'لدي روح الدعابة',icon:'😄'},
+    {en:'I share my ideas',ar:'أشارك أفكاري',icon:'💡'},
+    {en:'I can say NO to wrong things',ar:'أستطيع قول لا للخطأ',icon:'🚫'},
+    {en:'I am curious',ar:'لدي فضول',icon:'🔍'},
+    {en:'I ask questions',ar:'أطرح أسئلة',icon:'❓'},
+    {en:'I help others',ar:'أساعد الآخرين',icon:'🤝'},
+    {en:'I love my body',ar:'أنا أحب جسدي',icon:'❤️'},
+    {en:'I take care of myself',ar:'أعتني بنفسي',icon:'🌟'},
+    {en:'I love all my feelings',ar:'أحب كل مشاعري',icon:'🌈'},
+    {en:'I come up with great ideas',ar:'آتي بأفكار رائعة',icon:'🚀'},
+    {en:'I can learn anything',ar:'يمكنني تعلم أي شيء',icon:'📚'}
+  ];
+  abilities.forEach(function(a){
+    var card=document.createElement('div');
+    card.className='re-sel-card';
+    card.innerHTML=a.icon+' '+a.en+' / <span style="font-family:var(--font-ar)">'+a.ar+'</span>';
+    card.onclick=function(e){ this.classList.toggle('on'); if(this.classList.contains('on')){this.style.background=col; var total=document.querySelectorAll('.re-sel-card.on').length; if(total===14) confettiBurst(e.clientX,e.clientY,40); }else{this.style.background='';} };
+    grid.appendChild(card);
+  });
+  right.appendChild(grid);
+  body.appendChild(right);
+  el.appendChild(body);
+}
+
+// ─── Topic 1: Perseverance ───
+function reRender1(el, col){
+  // Story card
+  var story=document.createElement('div');
+  story.className='re-story';
+  story.innerHTML='<div class="re-story-title">📖 The Perseverance Story — قصة المثابرة</div>'+
+    '<div class="re-story-body">This young leader believed his people could reach a better life. He worked, learned and never stopped dreaming.</div>'+
+    '<div style="margin:10px 0;display:flex;align-items:center;gap:10px;"><span style="font-size:2rem">🇦🇪</span><span style="font-weight:900;font-size:1.1rem">Sheikh Zayed — الشيخ زايد &nbsp;✨ A great example of perseverance</span></div>'+
+    '<div class="re-story-body-ar">كان هناك قائد شاب يؤمن بأن شعبه يستطيع الوصول لحياة أفضل. عمل وتعلم ولم يتوقف عن الحلم.</div>';
+  el.appendChild(story);
+
+  // Quote
+  var quote=document.createElement('div');
+  quote.style.cssText='background:#FFF8E1;border-radius:var(--radius-lg);padding:16px 20px;border-left:5px solid #F9A825;font-size:.9rem;font-weight:700;color:#5D4037;line-height:1.6;';
+  quote.innerHTML='🌳 <em>"The wind must blow, yet it quickly disappears — the tree stays strong because of its roots."</em>'+
+    '<div style="font-family:var(--font-ar);direction:rtl;text-align:right;margin-top:8px;font-size:.88rem;color:#795548;">تذكر: الريح لا بد أن تهب لكنها سرعان ما تختفي، وتبقى الشجرة صامدة بسبب جذورها القوية</div>';
+  el.appendChild(quote);
+
+  // Roots
+  var rootTitle=document.createElement('div');
+  rootTitle.className='re-section-title';
+  rootTitle.style.marginBottom='10px';
+  rootTitle.textContent='🌱 My Strong Roots — جذوري الخاصة — Tap each root that keeps you strong!';
+  el.appendChild(rootTitle);
+
+  var roots=[
+    {icon:'👨‍👩‍👧',en:'Family',ar:'العائلة',col:'#E91E63'},
+    {icon:'🕌',en:'Faith',ar:'الإيمان',col:'#00897B'},
+    {icon:'👫',en:'Friends',ar:'الأصدقاء',col:'#1976D2'},
+    {icon:'🇦🇪',en:'Country',ar:'الوطن',col:'#2E7D32'},
+    {icon:'💡',en:'Ideas',ar:'الأفكار',col:'#F57F17'},
+    {icon:'🏡',en:'Places',ar:'الأماكن',col:'#7B1FA2'},
+    {icon:'🎨',en:'Hobbies',ar:'الهوايات',col:'#AD1457'}
+  ];
+  var rootGrid=document.createElement('div');
+  rootGrid.className='re-roots-grid';
+  roots.forEach(function(r){
+    var node=document.createElement('div');
+    node.className='re-root-node';
+    node.innerHTML='<div class="rn-icon">'+r.icon+'</div><div class="rn-en">'+r.en+'</div><div class="rn-ar">'+r.ar+'</div>';
+    node.onclick=function(){
+      this.classList.toggle('on');
+      this.style.background=this.classList.contains('on')?r.col:'';
+      this.style.borderColor=this.classList.contains('on')?r.col:'#e0e0e0';
+    };
+    rootGrid.appendChild(node);
+  });
+  el.appendChild(rootGrid);
+}
+
+// ─── Topic 2: Learning Mindset ───
+function reRender2(el, col){
+  var body=document.createElement('div');
+  body.className='fa-body';
+
+  // Left: Skills
+  var left=document.createElement('div');
+  left.className='fa-steps-col';
+  left.style.flex='1';
+  left.innerHTML='<div class="re-section-title">🔑 Skills — المهارات</div>'+
+    '<div style="font-size:.75rem;color:var(--text-mid);font-weight:600;margin-bottom:12px;">A skill grows through practice! Tap your skills / اضغط على مهاراتك!</div>';
+  var sg=document.createElement('div');
+  sg.className='re-skills-grid';
+  var skills=[
+    {icon:'🚲',en:'Cycling',ar:'ركوب الدراجة'},
+    {icon:'🎨',en:'Drawing',ar:'الرسم'},
+    {icon:'✍️',en:'Writing',ar:'الكتابة'},
+    {icon:'👂',en:'Listening',ar:'الاستماع'},
+    {icon:'⏰',en:'Time Management',ar:'إدارة الوقت'},
+    {icon:'💡',en:'Creative Thinking',ar:'التفكير الإبداعي'},
+    {icon:'🗣️',en:'Communication',ar:'التواصل'},
+    {icon:'🤝',en:'Responsibility',ar:'تحمل المسؤولية'}
+  ];
+  skills.forEach(function(s){
+    var c=document.createElement('div');
+    c.className='re-skill-card';
+    c.innerHTML=s.icon+' <div><div>'+s.en+'</div><div style="font-family:var(--font-ar);font-size:.76rem;color:var(--text-mid)">'+s.ar+'</div></div>';
+    c.onclick=function(){ this.classList.toggle('on'); this.style.background=this.classList.contains('on')?col:''; this.style.color=this.classList.contains('on')?'#fff':''; };
+    sg.appendChild(c);
+  });
+  left.appendChild(sg);
+  body.appendChild(left);
+
+  // Right: YET concept
+  var right=document.createElement('div');
+  right.className='fa-right-col';
+  right.style.flex='1.1';
+  right.innerHTML='<div class="re-section-title">💡 Learn to use "YET" — تعلم استخدام "مع ذلك"</div>'+
+    '<div style="font-size:.78rem;color:var(--text-mid);font-weight:600;margin-bottom:12px;">Tap each card to flip the thought! / اضغط لتحويل الفكرة!</div>';
+  var yets=[
+    {neg:"I can't ride a bike now",pos:'I can\'t ride a bike now ... YET! I will keep training ✨',neg_ar:'لا أستطيع ركوب الدراجة الآن',pos_ar:'لا أستطيع ركوب الدراجة الآن ... مع ذلك سأستمر حتى أتقن ذلك ✨'},
+    {neg:"I can't draw well",pos:"I can't draw well ... YET! I'll keep practicing 🎨",neg_ar:'لا أستطيع الرسم جيداً',pos_ar:'لا أستطيع الرسم جيداً ... مع ذلك سأستمر حتى أتحسن 🎨'},
+    {neg:"I'm not good at this subject",pos:"I'm not good at this subject ... YET! I'll get there 📚",neg_ar:'لست جيداً في هذه المادة',pos_ar:'لست جيداً في هذه المادة ... مع ذلك سأصل إليها 📚'}
+  ];
+  yets.forEach(function(y){
+    var card=document.createElement('div');
+    card.className='re-yet-card';
+    card.style.borderLeft='4px solid '+col;
+    card.innerHTML='<div class="re-yet-negative">😟 '+y.neg+'</div>'+
+      '<div style="font-family:var(--font-ar);direction:rtl;text-align:right;font-size:.8rem;color:#b71c1c;opacity:.6;text-decoration:line-through">'+y.neg_ar+'</div>'+
+      '<div class="re-yet-positive">😊 '+y.pos+'<div style="font-family:var(--font-ar);direction:rtl;text-align:right;font-size:.8rem;margin-top:4px;color:#1B5E20">'+y.pos_ar+'</div></div>'+
+      '<div class="re-yet-hint">👆 Tap to add YET! / اضغط لإضافة مع ذلك!</div>';
+    card.onclick=function(e){ var wasHidden=!this.classList.contains('revealed'); this.classList.toggle('revealed'); if(wasHidden) confettiBurst(e.clientX,e.clientY,12); };
+    right.appendChild(card);
+  });
+  body.appendChild(right);
+  el.appendChild(body);
+}
+
+// ─── Topic 3: Growth vs Fixed Mindset ───
+function reRender3(el, col){
+  var intro=document.createElement('div');
+  intro.style.cssText='background:var(--white);border-radius:var(--radius-lg);padding:14px 20px;box-shadow:var(--shadow-sm);font-size:.88rem;font-weight:700;color:var(--text-dark);text-align:center;';
+  intro.innerHTML='Our minds grow every time we learn something new! — <span style="font-family:var(--font-ar)">عقولنا تنمو كلما تعلمنا شيئاً جديداً!</span>'+
+    '<div style="font-size:.75rem;color:var(--text-mid);font-weight:600;margin-top:6px;">Tap Fixed Mindset items to see the Growth version! / اضغط على العقلية الثابتة لترى النمو!</div>';
+  el.appendChild(intro);
+
+  var cols=document.createElement('div');
+  cols.className='re-mindset-cols';
+
+  var pairs=[
+    {g:{en:'Can try',ar:'أستطيع المحاولة'},f:{en:'Cannot try anymore',ar:'لا يمكن المحاولة'}},
+    {g:{en:'Learn from mistakes',ar:'أتعلم من الأخطاء'},f:{en:'Hate failing',ar:'أكره الفشل'}},
+    {g:{en:'Learns from feedback',ar:'أتعلم من الملاحظات'},f:{en:'Ignores feedback',ar:'أتجاهل الملاحظات'}},
+    {g:{en:'Curious to learn',ar:'لدي فضول للتعلم'},f:{en:'Think I know everything',ar:'أعتقد أنني أعرف كل شيء'}},
+    {g:{en:'Asks questions',ar:'أسأل الأسئلة'},f:{en:"Doesn't ask questions",ar:'لا أسأل الأسئلة'}}
+  ];
+
+  var growthCol=document.createElement('div');
+  growthCol.className='re-mindset-col';
+  growthCol.innerHTML='<div class="re-mindset-header" style="background:#E8F5E9;color:#1B5E20;">✅ Growth Mindset — عقلية النمو</div>';
+
+  var fixedCol=document.createElement('div');
+  fixedCol.className='re-mindset-col';
+  fixedCol.innerHTML='<div class="re-mindset-header" style="background:#FFEBEE;color:#B71C1C;">❌ Fixed Mindset — العقلية الثابتة</div>';
+
+  pairs.forEach(function(p,i){
+    var gi=document.createElement('div');
+    gi.className='re-mindset-item';
+    gi.id='re-gm-g'+i;
+    gi.style.background='#F1F8E9';
+    gi.style.color='#2E7D32';
+    gi.innerHTML='✅ '+p.g.en+' / <span style="font-family:var(--font-ar)">'+p.g.ar+'</span>';
+    growthCol.appendChild(gi);
+
+    var fi=document.createElement('div');
+    fi.className='re-mindset-item';
+    fi.style.background='#FFF3E0';
+    fi.style.color='#BF360C';
+    fi.style.cursor='pointer';
+    fi.innerHTML='❌ '+p.f.en+' / <span style="font-family:var(--font-ar)">'+p.f.ar+'</span>';
+    (function(gi,fi,p){
+      fi.onclick=function(){
+        if(this.classList.contains('flipped')){
+          this.classList.remove('flipped');
+          this.style.background='#FFF3E0'; this.style.color='#BF360C';
+          this.innerHTML='❌ '+p.f.en+' / <span style="font-family:var(--font-ar)">'+p.f.ar+'</span>';
+          gi.style.background='#F1F8E9'; gi.style.transform='';
+        } else {
+          this.classList.add('flipped');
+          this.style.background='#E8F5E9'; this.style.color='#1B5E20';
+          this.innerHTML='✅ '+p.g.en+' / <span style="font-family:var(--font-ar)">'+p.g.ar+'</span> 🎉';
+          gi.style.background=col; gi.style.color='#fff'; gi.style.transform='scale(1.04)';
+        }
+      };
+    })(gi,fi,p);
+    fixedCol.appendChild(fi);
+  });
+
+  cols.appendChild(growthCol);
+  cols.appendChild(fixedCol);
+  el.appendChild(cols);
+
+  var tip=document.createElement('div');
+  tip.style.cssText='text-align:center;font-size:.8rem;font-weight:700;color:var(--text-mid);padding:8px;';
+  tip.textContent='🎯 Tap the red ❌ items to flip them to green ✅ — اضغط على البنود الحمراء لتحويلها!';
+  el.appendChild(tip);
+}
+
+// ─── Topic 4: Positive Self-Talk ───
+function reRender4(el, col){
+  var intro=document.createElement('div');
+  intro.style.cssText='background:var(--white);border-radius:var(--radius-lg);padding:14px 20px;box-shadow:var(--shadow-sm);font-size:.88rem;font-weight:700;color:var(--text-dark);text-align:center;';
+  intro.innerHTML='Your inner words have power! — <span style="font-family:var(--font-ar)">كلماتك الداخلية لها قوة!</span>'+
+    '<div style="font-size:.75rem;color:var(--text-mid);font-weight:600;margin-top:4px;">Tap each card to flip negative → positive! / اضغط لتحويل السلبي إلى إيجابي!</div>';
+  el.appendChild(intro);
+
+  var pairs=[
+    {neg:"I can't solve this problem",pos:"This is tricky — I can search for an answer 🔍",neg_ar:'لا أستطيع حل هذه المشكلة',pos_ar:'هذه المشكلة صعبة، يمكنني البحث عن إجابة'},
+    {neg:"I am not good at this",pos:"I am not good at this ... YET! 💪",neg_ar:'أنا لست جيداً في هذا',pos_ar:'أنا لست جيداً في هذا ... مع ذلك!'},
+    {neg:"This is the only thing I can do",pos:"I give effort and can do many things! 🌟",neg_ar:'هذا هو الشيء الوحيد الذي أفعله',pos_ar:'أبذل مجهوداً ويمكنني فعل أشياء كثيرة'},
+    {neg:"This is hard and not achievable",pos:"This gets better with practice! 🎯",neg_ar:'هذا صعب ولا يمكن تحقيقه',pos_ar:'يتحسن مع التدريب'},
+    {neg:"This was a complete failure",pos:"This was a great learning opportunity! 📚",neg_ar:'كان هذا فشلاً ذريعاً',pos_ar:'كانت هذه فرصة رائعة للتعلم'}
+  ];
+
+  var grid=document.createElement('div');
+  grid.className='re-flip-grid';
+  grid.style.gridTemplateColumns='1fr 1fr';
+  grid.style.gap='12px';
+
+  pairs.forEach(function(p){
+    var fc=document.createElement('div');
+    fc.className='re-flip-card';
+    fc.style.height='100px';
+    fc.innerHTML='<div class="re-flip-inner">'+
+      '<div class="re-flip-face re-flip-front">'+
+        '<span style="font-size:1.4rem">😟</span>'+
+        '<div><div>'+p.neg+'</div><div style="font-family:var(--font-ar);font-size:.78rem;direction:rtl;text-align:right;margin-top:3px;opacity:.8">'+p.neg_ar+'</div>'+
+        '<div class="re-flip-hint">👆 Tap to flip!</div></div>'+
+      '</div>'+
+      '<div class="re-flip-face re-flip-back">'+
+        '<span style="font-size:1.4rem">😊</span>'+
+        '<div><div>'+p.pos+'</div><div style="font-family:var(--font-ar);font-size:.78rem;direction:rtl;text-align:right;margin-top:3px;opacity:.85">'+p.pos_ar+'</div></div>'+
+      '</div>'+
+    '</div>';
+    fc.onclick=function(e){ var wasFlipped=this.classList.contains('flipped'); this.classList.toggle('flipped'); if(!wasFlipped) confettiBurst(e.clientX,e.clientY,10); };
+    grid.appendChild(fc);
+  });
+  el.appendChild(grid);
+}
+
+// ─── Topic 5: Feelings & Emotions ───
+function reRender5(el, col){
+  var intro=document.createElement('div');
+  intro.style.cssText='background:var(--white);border-radius:var(--radius-lg);padding:14px 20px;box-shadow:var(--shadow-sm);font-size:.88rem;font-weight:700;color:var(--text-dark);text-align:center;';
+  intro.innerHTML='We all feel all kinds of emotions — and that is completely normal! 🌈<br><span style="font-family:var(--font-ar)">نشعر جميعًا بكل أنواع المشاعر — وهذا أمر طبيعي تماماً!</span>'+
+    '<div style="font-size:.75rem;color:var(--text-mid);font-weight:600;margin-top:4px;">Tap a feeling! / اضغط على مشاعرك!</div>';
+  el.appendChild(intro);
+
+  var emotions=[
+    {icon:'😄',en:'Happy',ar:'سعيد',col:'#F9A825'},
+    {icon:'😢',en:'Sad',ar:'حزين',col:'#42A5F5'},
+    {icon:'😡',en:'Angry',ar:'غاضب',col:'#EF5350'},
+    {icon:'😨',en:'Scared',ar:'خائف',col:'#7E57C2'},
+    {icon:'😲',en:'Surprised',ar:'مندهش',col:'#FF7043'},
+    {icon:'🤢',en:'Disgusted',ar:'متقزز',col:'#66BB6A'},
+    {icon:'😌',en:'Calm',ar:'هادئ',col:'#26C6DA'},
+    {icon:'😟',en:'Worried',ar:'قلق',col:'#8D6E63'},
+    {icon:'🥰',en:'Loved',ar:'محبوب',col:'#EC407A'},
+    {icon:'😤',en:'Frustrated',ar:'محبط',col:'#FF5722'},
+    {icon:'😊',en:'Grateful',ar:'ممتنان',col:'#9CCC65'},
+    {icon:'😎',en:'Confident',ar:'واثق',col:'#29B6F6'}
+  ];
+
+  var activeEl=null;
+  var grid=document.createElement('div');
+  grid.className='re-emotions-grid';
+
+  var favBox=document.createElement('div');
+  favBox.style.cssText='background:var(--white);border-radius:var(--radius-lg);padding:14px 20px;box-shadow:var(--shadow-sm);text-align:center;font-size:.88rem;font-weight:700;color:var(--text-mid);margin-top:4px;';
+  favBox.id='re-fav-box';
+  favBox.innerHTML='❤️ Which is your favorite feeling? / ما هو الشعور المفضل بالنسبة لك?';
+
+  emotions.forEach(function(e){
+    var btn=document.createElement('div');
+    btn.className='re-emotion-btn';
+    btn.innerHTML='<div class="re-emotion-icon">'+e.icon+'</div><div class="re-emotion-en">'+e.en+'</div><div class="re-emotion-ar">'+e.ar+'</div>';
+    btn.onclick=function(){
+      if(activeEl && activeEl!==this){
+        activeEl.classList.remove('active');
+        activeEl.style.background=''; activeEl.style.borderColor='#e0e0e0'; activeEl.style.color='';
+      }
+      this.classList.toggle('active');
+      var isOn=this.classList.contains('active');
+      this.style.background=isOn?e.col:'';
+      this.style.borderColor=isOn?e.col:'#e0e0e0';
+      this.style.color=isOn?'#fff':'';
+      activeEl=isOn?this:null;
+      document.getElementById('re-fav-box').innerHTML=isOn?
+        '❤️ Your favorite feeling is: <strong style="color:'+e.col+'">'+e.icon+' '+e.en+' — <span style="font-family:var(--font-ar)">'+e.ar+'</span></strong> 🎉':
+        '❤️ Which is your favorite feeling? / ما هو الشعور المفضل بالنسبة لك?';
+    };
+    grid.appendChild(btn);
+  });
+
+  el.appendChild(grid);
+  el.appendChild(favBox);
+}
+
+// ─── Topic 6: Gratitude ───
+function reRender6(el, col){
+  var counter=document.createElement('div');
+  counter.className='re-counter';
+  counter.style.borderTop='4px solid '+col;
+  counter.innerHTML='<div class="re-grat-counter-num" id="re-grat-num" style="color:'+col+'">0</div>'+
+    '<div style="font-size:.85rem;font-weight:700;color:var(--text-mid)">Things I am grateful for — أشياء أشعر بالامتنان لوجودها</div>'+
+    '<div style="font-size:.75rem;color:var(--text-mid);margin-top:4px;">Tap to color them! / اضغط للتلوين!</div>';
+  el.appendChild(counter);
+
+  var items=[
+    {icon:'👨‍👩‍👧',en:'Family',ar:'العائلة',col:'#E91E63'},
+    {icon:'👫',en:'Friends',ar:'الأصدقاء',col:'#1976D2'},
+    {icon:'🏠',en:'Home',ar:'البيت',col:'#F57F17'},
+    {icon:'🌞',en:'Sunshine',ar:'الشمس',col:'#FDD835'},
+    {icon:'📚',en:'Learning',ar:'التعلم',col:'#0288D1'},
+    {icon:'🍎',en:'Food',ar:'الطعام',col:'#E53935'},
+    {icon:'❤️',en:'Health',ar:'الصحة',col:'#00897B'},
+    {icon:'🎨',en:'Creativity',ar:'الإبداع',col:'#7B1FA2'},
+    {icon:'🐾',en:'Animals',ar:'الحيوانات',col:'#5D4037'},
+    {icon:'🌍',en:'Homeland',ar:'الوطن',col:'#2E7D32'}
+  ];
+
+  var count=0;
+  var grid=document.createElement('div');
+  grid.className='re-grat-grid';
+
+  items.forEach(function(item){
+    var card=document.createElement('div');
+    card.className='re-grat-card';
+    card.innerHTML='<div class="re-grat-icon">'+item.icon+'</div><div class="re-grat-en">'+item.en+'</div><div class="re-grat-ar">'+item.ar+'</div>';
+    card.onclick=function(){
+      var on=this.classList.toggle('on');
+      this.style.background=on?item.col:'';
+      this.style.borderColor=on?item.col:'#e0e0e0';
+      count+=on?1:-1;
+      document.getElementById('re-grat-num').textContent=count;
+      if(on && (count===5||count===10)) confettiBurst(event.clientX, event.clientY, count===10?40:20);
+    };
+    grid.appendChild(card);
+  });
+  el.appendChild(grid);
+
+  var extra=document.createElement('div');
+  extra.style.cssText='background:var(--white);border-radius:var(--radius-lg);padding:14px 20px;box-shadow:var(--shadow-sm);font-size:.85rem;font-weight:700;color:var(--text-mid);text-align:center;border-left:4px solid '+col+';';
+  extra.innerHTML='✨ I am also grateful for ... — وأنا ممتن أيضاً لـ ...';
+  el.appendChild(extra);
+}
+
+function reStartIdle(){
+  reStopIdle(); reIdleRemain=45;
+  document.getElementById('re-idle-wrap').style.display='flex';
+  document.getElementById('re-idle-bar').style.width='100%';
+  reIdleInterval=setInterval(function(){
+    reIdleRemain--;
+    var pct=Math.max(0,(reIdleRemain/45)*100);
+    document.getElementById('re-idle-bar').style.width=pct+'%';
+    document.getElementById('re-idle-label').textContent='Returning in '+reIdleRemain+'s';
+    if(reIdleRemain<=0){reStopIdle();reShowMenu();}
+  },1000);
+}
+function reStopIdle(){ if(reIdleInterval){clearInterval(reIdleInterval);reIdleInterval=null;} }
+document.addEventListener('pointerdown',function(){
+  if(CUR_SCREEN==='re' && reIdleInterval){ reIdleRemain=45; }
+});
+
+// ═══════════════════════════════════════
+// PUBLIC HEALTH
+// ═══════════════════════════════════════
+var PH_TOPICS = [
+  {
+    emoji:'🙌', color:'#00897B',
+    en:'Handwashing', ar:'غسل اليدين – درعك الأول',
+    subtitle:{en:'Your #1 Shield', ar:'درعك الأول'},
+    steps:[
+      {en:'Wet your hands with running water', ar:'بلل يديك بالماء الجاري'},
+      {en:'Apply enough soap to cover both hands', ar:'ضع كمية كافية من الصابون'},
+      {en:'Rub hands together for a full 20 seconds', ar:'افرك يديك معاً لمدة 20 ثانية كاملة'},
+      {en:"Don't forget between fingers, under nails and back of hands", ar:'لا تنسَ بين الأصابع، تحت الأظافر، وظهر اليدين'},
+      {en:'Rinse hands well under running water', ar:'اشطف يديك جيداً تحت الماء الجاري'},
+      {en:'Dry with a clean towel or paper towel', ar:'جفف يديك بمنشفة نظيفة أو ورق تجفيف'}
+    ],
+    when:[
+      {icon:'🍽️', en:'Before & after eating', ar:'قبل وبعد الأكل'},
+      {icon:'🚽', en:'After the toilet', ar:'بعد المرحاض'},
+      {icon:'🤧', en:'After sneezing or coughing', ar:'بعد العطس أو السعال'},
+      {icon:'🎮', en:'After playing', ar:'بعد اللعب'},
+      {icon:'🐾', en:'After touching animals', ar:'بعد لمس الحيوانات'},
+      {icon:'🩺', en:'Before first aid', ar:'قبل الإسعافات الأولية'}
+    ],
+    fact:{en:'Proper handwashing prevents 80% of infectious diseases from spreading', ar:'غسل اليدين الصحيح يقي من انتقال 80% من الأمراض المعدية'},
+    source:'WHO – منظمة الصحة العالمية'
+  },
+  {
+    emoji:'💉', color:'#7B1FA2',
+    en:'Vaccines', ar:'اللقاحات',
+    subtitle:{en:'Your Shield Against Disease', ar:'حصنك ضد الأمراض'},
+    bullets:[
+      {icon:'🛡️', en:'Vaccines protect your body from dangerous diseases like measles, polio and hepatitis', ar:'اللقاحات تحمي جسمك من الأمراض الخطيرة كالحصبة وشلل الأطفال والتهاب الكبد'},
+      {icon:'📅', en:'Follow the UAE National Immunization Program schedule from birth to Grade 11', ar:'اتبع الجدول الوطني للتطعيم في الإمارات من الولادة حتى الصف 11'},
+      {icon:'🌍', en:'UAE achieves 95%+ vaccination coverage – among the highest in the world (WHO)', ar:'الإمارات تحقق تغطية تطعيم تتجاوز 95% – من بين الأعلى عالمياً'},
+      {icon:'🆓', en:'Free vaccination at all ADPHC & DOH primary health centers in Abu Dhabi', ar:'التطعيم مجاني في جميع مراكز الرعاية الصحية الأولية التابعة لـ ADPHC وDOH في أبوظبي'}
+    ],
+    diseases:[
+      {emoji:'💉', en:'Measles MMR', ar:'الحصبة'},
+      {emoji:'💉', en:'Polio', ar:'شلل الأطفال'},
+      {emoji:'💉', en:'Hepatitis', ar:'التهاب الكبد'},
+      {emoji:'💉', en:'Chickenpox', ar:'الجدري'},
+    ],
+    source:'DOH أبوظبي & WHO'
+  },
+  {
+    emoji:'😴', color:'#1565C0',
+    en:'Sleep', ar:'النوم الكافي',
+    subtitle:{en:'Fuel for Your Brain', ar:'وقود الدماغ'},
+    ageTable:[
+      {group:{en:'Children', ar:'أطفال'}, age:{en:'6–12 years', ar:'6-12 سنة'}, hours:{en:'9–12 hours', ar:'9-12 ساعة'}},
+      {group:{en:'Teens', ar:'مراهقون'}, age:{en:'13–18 years', ar:'13-18 سنة'}, hours:{en:'8–10 hours', ar:'8-10 ساعات'}}
+    ],
+    steps:[
+      {en:'Turn off all screens 1 hour before bedtime', ar:'أغلق جميع الشاشات قبل ساعة من وقت النوم'},
+      {en:'Go to sleep and wake up at the same time every day', ar:'اذهب للنوم واستيقظ في نفس الوقت يومياً'},
+      {en:'Keep your bedroom quiet, dark and comfortable', ar:'اجعل غرفة نومك هادئة ومظلمة ومريحة'},
+      {en:'Avoid caffeine and sugars before bedtime', ar:'تجنب الكافيين والسكريات قبل النوم'},
+      {en:'Exercise during the day for better sleep', ar:'مارس نشاطاً بدنياً خلال النهار لنوم أفضل'}
+    ],
+    benefits:[
+      {icon:'🧠', en:'Memory', ar:'تحسين الذاكرة'},
+      {icon:'💪', en:'Healthy growth', ar:'نمو صحي'},
+      {icon:'😊', en:'Better mood', ar:'مزاج أفضل'},
+      {icon:'🛡️', en:'Strong immunity', ar:'مناعة قوية'},
+      {icon:'📚', en:'Better focus', ar:'تركيز أعلى'}
+    ],
+    source:'ADPHC & WHO'
+  },
+  {
+    emoji:'📱', color:'#E65100',
+    en:'Screen Time', ar:'وقت الشاشة',
+    subtitle:{en:'Balance Matters!', ar:'التوازن مهم!'},
+    ageTable:[
+      {group:{en:'Under 2 years', ar:'أقل من 2 سنة'}, age:{en:'🚫', ar:'🚫'}, hours:{en:'Zero', ar:'صفر'}},
+      {group:{en:'2–5 years', ar:'2-5 سنوات'}, age:{en:'⏱️', ar:'⏱️'}, hours:{en:'1 hr/day max', ar:'ساعة يومياً كحد أقصى'}},
+      {group:{en:'6 years+', ar:'6 سنوات فأكثر'}, age:{en:'✅', ar:'✅'}, hours:{en:'Reasonable limits', ar:'حدود معقولة'}}
+    ],
+    steps:[
+      {en:'Make screen time educational and interactive, not passive', ar:'اجعل وقت الشاشة تعليمياً وتفاعلياً وليس سلبياً'},
+      {en:'Meal and bedtime must always be screen-free', ar:'وقت الأكل والنوم يجب أن يكون بدون شاشات دائماً'},
+      {en:'Choose sports and outdoor activities over screen time', ar:'مارس الرياضة والأنشطة الخارجية بدلاً من الشاشة'},
+      {en:'Talk to children about the content they watch', ar:'تحدث مع الأطفال عن المحتوى الذي يشاهدونه'}
+    ],
+    source:'American Academy of Pediatrics & ADPHC'
+  },
+  {
+    emoji:'⚽', color:'#2E7D32',
+    en:'Physical Activity', ar:'النشاط البدني',
+    subtitle:{en:'Move Your Body!', ar:'حرك جسمك!'},
+    stat:{num:'60', unit:{en:'minutes daily', ar:'دقيقة يومياً'}, label:{en:'Minimum recommended', ar:'الحد الأدنى الموصى به'}},
+    activities:[
+      {icon:'🏃', en:'Running & brisk walking', ar:'الجري والمشي السريع'},
+      {icon:'🏊', en:'Swimming', ar:'السباحة'},
+      {icon:'🚴', en:'Cycling', ar:'ركوب الدراجة'},
+      {icon:'⚽', en:'Team sports (football, basketball)', ar:'الرياضة الجماعية (كرة قدم، كرة سلة)'},
+      {icon:'🤸', en:'Strength exercises & kids yoga', ar:'تمارين القوة واليوغا للأطفال'}
+    ],
+    fact:{en:'Daily physical activity reduces obesity risk by 50% and strengthens the heart, bones and mind!', ar:'النشاط البدني اليومي يقلل خطر السمنة بنسبة 50٪ ويقوي القلب والعظام والعقل!'},
+    source:'ADPHC – Active Abu Dhabi Initiative'
+  },
+  {
+    emoji:'🧠', color:'#AD1457',
+    en:'Mental Health', ar:'الصحة النفسية',
+    subtitle:{en:'Your Mind Matters!', ar:'عقلك يهم!'},
+    steps:[
+      {en:'Talk to someone you trust about your feelings', ar:'تحدث مع شخص تثق به عن مشاعرك'},
+      {en:'Exercise – it improves mood naturally', ar:'مارس الرياضة – تحسّن المزاج بشكل طبيعي'},
+      {en:'Good sleep and healthy food support your mental health', ar:'النوم الكافي والغذاء الصحي يدعمان صحتك النفسية'},
+      {en:'Make time for rest and enjoyable hobbies', ar:'خصص وقتاً للراحة والهوايات الممتعة'},
+      {en:'Maintain positive social relationships with friends & family', ar:'حافظ على علاقات اجتماعية إيجابية مع الأصدقاء والعائلة'},
+      {en:'Asking for help when needed = STRENGTH, not weakness', ar:'طلب المساعدة عند الحاجة قوة وليس ضعفاً 💙'}
+    ],
+    fact:{en:'Good mental health helps you learn, grow and succeed', ar:'صحتك النفسية تساعدك على التعلم والتطور والنجاح'},
+    hotline:{num:'800-SAKINA', label:{en:'Mental Health Support Line', ar:'خط الدعم النفسي – سكينة'}},
+    source:'ADPHC Community Mental Health Programme'
+  }
+];
+
+var phIdleInterval=null, phIdleRemain=0;
+
+function initPH(){phShowMenu();}
+
+function phShowMenu(){ phShowTopic(0); }
+function phShowMenu_legacy(){
+  document.getElementById('ph-idle-wrap').style.display='none';
+  phStopIdle();
+}
+
+function phShowTopic(idx){
+  if(!PH_TOPICS||!PH_TOPICS[idx]) return;
+  document.querySelectorAll('.ph-tl-item').forEach(function(el){el.classList.remove('active');});
+  var li=document.querySelector('.ph-tl-item[data-idx="'+idx+'"]');
+  if(li) li.classList.add('active');
+  var t=PH_TOPICS[idx];
+  var col=t.color;
+  var detail=document.getElementById('ph-detail');
+  detail.innerHTML='';
+
+  // Header
+  var hdr=document.createElement('div');
+  hdr.className='fa-detail-header';
+  hdr.style.borderLeft='6px solid '+col;
+  hdr.innerHTML='<div class="fa-detail-icon">'+t.emoji+'</div>'+
+    '<div class="fa-detail-title">'+
+      '<div class="fa-detail-title-en">'+t.en+' <span style="font-size:1rem;font-weight:700;color:var(--text-mid)">— '+t.subtitle.en+'</span></div>'+
+      '<div class="fa-detail-title-ar">'+t.ar+'</div>'+
+    '</div>';
+  detail.appendChild(hdr);
+
+  var body=document.createElement('div');
+  body.className='fa-body';
+
+  // LEFT COLUMN
+  var left=document.createElement('div');
+  left.className='fa-steps-col';
+
+  if(t.steps){
+    left.innerHTML='<div class="fa-steps-title">Steps / Tips — النصائح</div>';
+    t.steps.forEach(function(s,i){
+      var step=document.createElement('div');
+      step.className='fa-step';
+      step.innerHTML='<div class="fa-step-num" style="background:'+col+'">'+(i+1)+'</div>'+
+        '<div class="fa-step-text">'+
+          '<div class="fa-step-en">'+s.en+'</div>'+
+          '<div class="fa-step-ar">'+s.ar+'</div>'+
+        '</div>';
+      left.appendChild(step);
+    });
+  }
+
+  if(t.bullets){
+    left.innerHTML='<div class="fa-steps-title">Key Facts — معلومات أساسية</div>';
+    t.bullets.forEach(function(b){
+      var item=document.createElement('div');
+      item.className='fa-step';
+      item.innerHTML='<div style="font-size:1.6rem;flex-shrink:0;margin-top:2px">'+b.icon+'</div>'+
+        '<div class="fa-step-text">'+
+          '<div class="fa-step-en">'+b.en+'</div>'+
+          '<div class="fa-step-ar">'+b.ar+'</div>'+
+        '</div>';
+      left.appendChild(item);
+    });
+  }
+
+  body.appendChild(left);
+
+  // RIGHT COLUMN
+  var right=document.createElement('div');
+  right.className='fa-right-col';
+
+  // Age table (Sleep, Screen Time)
+  if(t.ageTable){
+    var tableWrap=document.createElement('div');
+    tableWrap.style.background='var(--white)';
+    tableWrap.style.borderRadius='var(--radius-lg)';
+    tableWrap.style.padding='16px';
+    tableWrap.style.boxShadow='var(--shadow-sm)';
+    var tbl='<div class="fa-steps-title" style="margin-bottom:10px">Recommended Hours — الساعات الموصى بها</div><table class="ph-age-table"><thead><tr><th>Group</th><th>Age</th><th>Hours</th></tr></thead><tbody>';
+    t.ageTable.forEach(function(r){
+      tbl+='<tr><td><b>'+r.group.en+'</b><br><span style="font-family:var(--font-ar);font-size:.78rem">'+r.group.ar+'</span></td>'+
+           '<td>'+r.age.en+'<br><span style="font-family:var(--font-ar);font-size:.78rem">'+r.age.ar+'</span></td>'+
+           '<td style="color:'+col+';font-size:.95rem">'+r.hours.en+'<br><span style="font-family:var(--font-ar);font-size:.78rem;color:var(--text-mid)">'+r.hours.ar+'</span></td></tr>';
+    });
+    tbl+='</tbody></table>';
+    tableWrap.innerHTML=tbl;
+    right.appendChild(tableWrap);
+  }
+
+  // Stat box (Physical Activity)
+  if(t.stat){
+    var stat=document.createElement('div');
+    stat.className='ph-stat-box';
+    stat.style.borderTop='4px solid '+col;
+    stat.innerHTML='<div class="ph-stat-num" style="color:'+col+'">'+t.stat.num+'</div>'+
+      '<div class="ph-stat-label">'+t.stat.unit.en+' — '+t.stat.label.en+'</div>'+
+      '<div class="ph-stat-label-ar">'+t.stat.unit.ar+' — '+t.stat.label.ar+'</div>';
+    right.appendChild(stat);
+  }
+
+  // Activities list
+  if(t.activities){
+    var actWrap=document.createElement('div');
+    actWrap.className='ph-when-list';
+    actWrap.style.flex='1';
+    actWrap.innerHTML='<div class="fa-steps-title" style="margin-bottom:8px">Activities — الأنشطة</div>';
+    t.activities.forEach(function(a){
+      actWrap.innerHTML+='<div class="ph-when-item">'+a.icon+' <span>'+a.en+' &nbsp;/&nbsp; <span style="font-family:var(--font-ar)">'+a.ar+'</span></span></div>';
+    });
+    // activities go left if no steps/bullets
+    if(!t.steps && !t.bullets){ left.innerHTML='<div class="fa-steps-title">Activities — الأنشطة</div>'; left.appendChild(actWrap); }
+    else { right.appendChild(actWrap); }
+  }
+
+  // Diseases list (Vaccines)
+  if(t.diseases){
+    var disWrap=document.createElement('div');
+    disWrap.className='ph-when-list';
+    disWrap.innerHTML='<div class="fa-steps-title" style="margin-bottom:8px">Protects Against — يحمي من</div>';
+    t.diseases.forEach(function(d){
+      disWrap.innerHTML+='<div class="ph-when-item">'+d.emoji+' <span>'+d.en+' &nbsp;/&nbsp; <span style="font-family:var(--font-ar)">'+d.ar+'</span></span></div>';
+    });
+    right.appendChild(disWrap);
+  }
+
+  // When to wash (Handwashing)
+  if(t.when){
+    var whenWrap=document.createElement('div');
+    whenWrap.className='ph-when-list';
+    whenWrap.innerHTML='<div class="fa-steps-title" style="margin-bottom:8px">When to Wash — متى تغسل يديك؟</div>';
+    t.when.forEach(function(w){
+      whenWrap.innerHTML+='<div class="ph-when-item">'+w.icon+' <span>'+w.en+' &nbsp;/&nbsp; <span style="font-family:var(--font-ar)">'+w.ar+'</span></span></div>';
+    });
+    right.appendChild(whenWrap);
+  }
+
+  // Benefits grid (Sleep)
+  if(t.benefits){
+    var benWrap=document.createElement('div');
+    benWrap.style.background='var(--white)';
+    benWrap.style.borderRadius='var(--radius-lg)';
+    benWrap.style.padding='16px';
+    benWrap.style.boxShadow='var(--shadow-sm)';
+    benWrap.innerHTML='<div class="fa-steps-title" style="margin-bottom:10px">Benefits — الفوائد</div><div class="ph-benefits-grid">';
+    t.benefits.forEach(function(b){
+      benWrap.innerHTML+='<div class="ph-benefit-item">'+b.icon+' <div><div>'+b.en+'</div><div style="font-family:var(--font-ar);font-size:.76rem;color:var(--text-mid)">'+b.ar+'</div></div></div>';
+    });
+    benWrap.innerHTML+='</div>';
+    right.appendChild(benWrap);
+  }
+
+  // Fact box
+  if(t.fact){
+    var fact=document.createElement('div');
+    fact.className='ph-fact';
+    fact.style.background='linear-gradient(135deg,'+col+','+col+'cc)';
+    fact.innerHTML='💡 '+t.fact.en+'<div class="ph-fact-ar">'+t.fact.ar+'</div>';
+    right.appendChild(fact);
+  }
+
+  // Hotline (Mental Health)
+  if(t.hotline){
+    var hl=document.createElement('div');
+    hl.className='ph-hotline';
+    hl.innerHTML='<div class="ph-hotline-num">📞 '+t.hotline.num+'</div>'+
+      '<div class="ph-hotline-label">'+t.hotline.label.en+'</div>'+
+      '<div class="ph-hotline-label-ar">'+t.hotline.label.ar+'</div>';
+    right.appendChild(hl);
+  }
+
+  // Source tag
+  var src=document.createElement('div');
+  src.style.cssText='font-size:.72rem;color:var(--text-mid);font-weight:700;text-align:right;padding:4px 0;';
+  src.textContent='Source: '+t.source;
+  right.appendChild(src);
+
+  body.appendChild(right);
+  detail.appendChild(body);
+  phStartIdle();
+}
+
+function phStartIdle(){
+  phStopIdle();
+  phIdleRemain=45;
+  document.getElementById('ph-idle-wrap').style.display='flex';
+  document.getElementById('ph-idle-bar').style.width='100%';
+  phIdleInterval=setInterval(function(){
+    phIdleRemain--;
+    var pct=Math.max(0,(phIdleRemain/45)*100);
+    document.getElementById('ph-idle-bar').style.width=pct+'%';
+    document.getElementById('ph-idle-label').textContent='Returning in '+phIdleRemain+'s';
+    if(phIdleRemain<=0){phStopIdle();phShowMenu();}
+  },1000);
+}
+
+function phStopIdle(){
+  if(phIdleInterval){clearInterval(phIdleInterval);phIdleInterval=null;}
+}
+
+document.addEventListener('pointerdown',function(){
+  if(CUR_SCREEN==='ph' && phIdleInterval){phIdleRemain=45;}
+});
+
+// ═══════════════════════════════════════
+// FIRST AID
+// ═══════════════════════════════════════
+var FA_TOPICS = [
+  {
+    emoji:'🩹', color:'#E91E63',
+    en:'Cuts & Scrapes', ar:'الجروح والخدوش',
+    steps:[
+      {en:'Wash your hands with soap and water for 20 seconds', ar:'اغسل يديك بالماء والصابون لمدة 20 ثانية'},
+      {en:'Apply gentle pressure with a clean cloth to stop bleeding', ar:'اضغط برفق على الجرح بقطعة قماش نظيفة لوقف النزيف'},
+      {en:'Rinse the wound thoroughly with clean running water', ar:'اشطف الجرح جيداً بالماء النظيف الجاري'},
+      {en:'Apply mild antiseptic then cover with a clean bandage', ar:'ضع مطهراً خفيفاً ثم غطِّ الجرح بضمادة نظيفة'},
+      {en:'Change the bandage daily or when it gets dirty', ar:'غيّر الضمادة يومياً أو عند الاتساخ'},
+      {en:'Tell a parent or teacher immediately if the wound is deep', ar:'أخبر والديك أو المعلم فوراً إذا كان الجرح عميقاً'}
+    ],
+    doList:[
+      {en:'Always wash hands first', ar:'اغسل اليدين أولاً دائماً'},
+      {en:'Use a sterile bandage', ar:'استخدم ضمادة معقمة'}
+    ],
+    dontList:[
+      {en:"Don't apply dirt or toothpaste", ar:'لا تضع تراباً أو معجون أسنان'},
+      {en:"Don't ignore continuous bleeding", ar:'لا تتجاهل النزيف المستمر'}
+    ],
+    emergency:{en:'Call 999 if bleeding lasts more than 10 minutes or wound is very deep', ar:'اتصل بـ 999 إذا استمر النزيف لأكثر من 10 دقائق أو كان الجرح عميقاً جداً'}
+  },
+  {
+    emoji:'🔥', color:'#FF5722',
+    en:'Minor Burns', ar:'الحروق الخفيفة',
+    steps:[
+      {en:'Move the burned area away from the heat source immediately', ar:'أبعد الجزء المحروق عن مصدر الحرارة فوراً'},
+      {en:'Hold under cool running water for a full 10 minutes', ar:'ضع الحرق تحت ماء بارد جارٍ لمدة 10 دقائق كاملة'},
+      {en:'Do NOT use ice, butter, or toothpaste at all', ar:'لا تستخدم الجليد أو الزبدة أو المعجون إطلاقاً'},
+      {en:'Gently cover with a clean non-stick dressing', ar:'غطِّ الحرق بضمادة نظيفة غير لاصقة برفق'},
+      {en:'Do not break any blisters that form on the skin', ar:'لا تكسر أي فقاعات تتكون على الجلد'},
+      {en:'Tell parents or teacher and see a doctor if needed', ar:'أبلغ والديك أو المعلم وتوجه للطبيب عند الحاجة'}
+    ],
+    doList:[
+      {en:'Use cool (not cold) running water', ar:'استخدم ماءً فاتراً (ليس بارداً جداً)'},
+      {en:'Cover loosely with a clean dressing', ar:'غطِّ الحرق بضمادة نظيفة بشكل خفيف'}
+    ],
+    dontList:[
+      {en:"Don't use ice, butter or toothpaste", ar:'لا تستخدم الجليد أو الزبدة أو المعجون'},
+      {en:"Don't break blisters", ar:'لا تكسر الفقاعات'}
+    ],
+    emergency:{en:'Call 999 if burn is larger than your palm, has blisters, or affects face/hands', ar:'اتصل بـ 999 إذا كان الحرق أكبر من راحة اليد أو ظهرت فقاعات أو أصاب الوجه أو اليدين'}
+  },
+  {
+    emoji:'🩸', color:'#2196F3',
+    en:'Nosebleed', ar:'نزيف الأنف',
+    steps:[
+      {en:'Sit upright and tilt head slightly forward only', ar:'اجلس بوضع مستقيم وامل رأسك للأمام قليلاً فقط'},
+      {en:'Gently pinch both sides of the nose together for 10–15 minutes', ar:'اضغط بلطف على جانبي الأنف معاً لمدة 10-15 دقيقة'},
+      {en:'Breathe calmly through your mouth while pinching', ar:'تنفس من فمك بهدوء أثناء الضغط'},
+      {en:'Do NOT tilt head back or swallow the blood', ar:'لا تميل رأسك للخلف ولا تبلع الدم'},
+      {en:'Do not blow your nose for 2 hours after bleeding stops', ar:'لا تنفخ أنفك خلال ساعتين بعد توقف النزيف'},
+      {en:'Stay calm – most nosebleeds stop on their own', ar:'ابقَ هادئاً – معظم نزيف الأنف يتوقف وحده'}
+    ],
+    doList:[
+      {en:'Sit upright, lean slightly forward', ar:'اجلس مستقيماً وامل للأمام قليلاً'},
+      {en:'Pinch nose firmly for 10–15 min', ar:'اضغط على الأنف بحزم لـ 10-15 دقيقة'}
+    ],
+    dontList:[
+      {en:"Don't tilt head back", ar:'لا تميل رأسك للخلف'},
+      {en:"Don't swallow blood or blow nose", ar:'لا تبلع الدم ولا تنفخ أنفك'}
+    ],
+    emergency:{en:'Seek medical help if bleeding lasts more than 20 minutes or is severe', ar:'اطلب المساعدة الطبية إذا استمر النزيف لأكثر من 20 دقيقة أو كان شديداً'}
+  },
+  {
+    emoji:'😰', color:'#9C27B0',
+    en:'Choking', ar:'الاختناق',
+    steps:[
+      {en:'If they can cough – let them cough it out, do not interfere', ar:'إذا كان يستطيع السعال – دعه يسعل وحده، لا تتدخل'},
+      {en:'If they stop breathing – get adult help immediately', ar:'إذا توقف عن التنفس – اطلب مساعدة كبار السن فوراً'},
+      {en:'Lean them forward and give 5 firm back blows between shoulder blades', ar:'انحنِ للأمام واطلب ضرب الظهر 5 مرات بقوة بين لوحي الكتف'},
+      {en:'Stay calm and reassure the affected person', ar:'ابقَ هادئاً وطمئن الشخص المصاب'},
+      {en:'Never try to remove the object blindly with your finger', ar:'لا تحاول أبداً إخراج الجسم بإصبعك بشكل أعمى'}
+    ],
+    doList:[
+      {en:'Let them cough if they can', ar:'دعهم يسعلون إن استطاعوا'},
+      {en:'Give 5 firm back blows if needed', ar:'أعطِ 5 ضربات على الظهر عند الحاجة'}
+    ],
+    dontList:[
+      {en:"Don't put fingers in their mouth blindly", ar:'لا تضع إصبعك في فمه بشكل أعمى'},
+      {en:"Don't shake or panic them", ar:'لا تهزّه أو تُصيبه بالذعر'}
+    ],
+    emergency:{en:'Call 999 immediately if breathing stops or face turns blue', ar:'اتصل بـ 999 فوراً إذا توقف التنفس أو تحوّل الوجه للأزرق'},
+    signs:[
+      {en:'Cannot speak', ar:'لا يستطيع التحدث'},
+      {en:'Severe difficulty breathing', ar:'صعوبة شديدة في التنفس'},
+      {en:'Face turns blue or purple', ar:'الوجه يتحول للأزرق'},
+      {en:'Grabbing the throat', ar:'الإمساك بالحلق'}
+    ]
+  },
+  {
+    emoji:'🧰', color:'#00897B',
+    en:'First Aid Kit', ar:'حقيبة الإسعافات الأولية',
+    isKit:true,
+    items:[
+      {emoji:'🩹', en:'Bandages in different sizes', ar:'ضمادات بأحجام مختلفة'},
+      {emoji:'🧻', en:'Sterile medical gauze', ar:'شاش طبي معقم'},
+      {emoji:'✂️', en:'Tweezers and medical scissors', ar:'ملقط ومقص طبي'},
+      {emoji:'🧴', en:'Antiseptic (Betadine / Dettol)', ar:'مطهر جلدي (بيتادين / ديتول)'},
+      {emoji:'💊', en:"Children's pain relief medication", ar:'مسكن ألم مناسب للأطفال'},
+      {emoji:'🌡️', en:'Digital thermometer', ar:'ميزان حرارة رقمي'},
+      {emoji:'🧤', en:'Sterile medical gloves', ar:'قفازات طبية معقمة'},
+      {emoji:'📋', en:'Emergency numbers card', ar:'بطاقة أرقام الطوارئ'}
+    ],
+    emergency:{en:'Ambulance 998  |  Police 999  |  Fire 997', ar:'إسعاف 998  |  شرطة 999  |  إطفاء 997'}
+  }
+];
+
+var faIdleTimer=null, faIdleSeconds=45, faIdleRemain=0, faIdleInterval=null;
+
+function initFA(){
+  faShowMenu();
+}
+
+function faShowMenu(){ faShowTopic(0); }
+function faShowMenu_legacy(){
+  document.getElementById('fa-idle-wrap').style.display='none';
+  faStopIdle();
+}
+
+function faShowTopic(idx){
+  if(!FA_TOPICS||!FA_TOPICS[idx]) return;
+  document.querySelectorAll('.fa-tl-item').forEach(function(el){el.classList.remove('active');});
+  var li=document.querySelector('.fa-tl-item[data-idx="'+idx+'"]');
+  if(li) li.classList.add('active');
+  var t=FA_TOPICS[idx];
+  var col=t.color;
+  var detail=document.getElementById('fa-detail');
+  detail.innerHTML='';
+
+  // Header
+  var hdr=document.createElement('div');
+  hdr.className='fa-detail-header';
+  hdr.style.borderLeft='6px solid '+col;
+  hdr.innerHTML='<div class="fa-detail-icon">'+t.emoji+'</div>'+
+    '<div class="fa-detail-title">'+
+      '<div class="fa-detail-title-en">'+t.en+'</div>'+
+      '<div class="fa-detail-title-ar">'+t.ar+'</div>'+
+    '</div>';
+  detail.appendChild(hdr);
+
+  if(t.isKit){
+    // Kit layout
+    var body=document.createElement('div');
+    body.className='fa-body';
+    var left=document.createElement('div');
+    left.className='fa-steps-col';
+    left.style.flex='1';
+    left.innerHTML='<div class="fa-steps-title">Kit Contents — محتويات الحقيبة</div><div class="fa-kit-grid" id="fa-kit-grid"></div>';
+    body.appendChild(left);
+    detail.appendChild(body);
+    var kg=document.getElementById('fa-kit-grid');
+    t.items.forEach(function(item){
+      var d=document.createElement('div');
+      d.className='fa-kit-item';
+      d.innerHTML='<span style="font-size:1.6rem">'+item.emoji+'</span>'+
+        '<div><div style="font-size:.88rem;font-weight:700;color:var(--text-dark)">'+item.en+'</div>'+
+        '<div class="fa-kit-item-ar">'+item.ar+'</div></div>';
+      kg.appendChild(d);
+    });
+    // Emergency row
+    var emg=document.createElement('div');
+    emg.className='fa-emergency';
+    emg.style.background='linear-gradient(135deg,#b71c1c,#c62828)';
+    emg.innerHTML='<div class="fa-emergency-num">🚨 '+t.emergency.en+'</div>'+
+      '<div class="fa-emergency-text-ar">'+t.emergency.ar+'</div>';
+    detail.appendChild(emg);
+  } else {
+    var body=document.createElement('div');
+    body.className='fa-body';
+
+    // Steps column
+    var stepsCol=document.createElement('div');
+    stepsCol.className='fa-steps-col';
+    stepsCol.innerHTML='<div class="fa-steps-title">Steps — الخطوات</div>';
+    t.steps.forEach(function(s,i){
+      var step=document.createElement('div');
+      step.className='fa-step';
+      step.innerHTML='<div class="fa-step-num" style="background:'+col+'">'+(i+1)+'</div>'+
+        '<div class="fa-step-text">'+
+          '<div class="fa-step-en">'+s.en+'</div>'+
+          '<div class="fa-step-ar">'+s.ar+'</div>'+
+        '</div>';
+      stepsCol.appendChild(step);
+    });
+    body.appendChild(stepsCol);
+
+    // Right column
+    var rightCol=document.createElement('div');
+    rightCol.className='fa-right-col';
+
+    // Signs (choking only)
+    if(t.signs){
+      var signs=document.createElement('div');
+      signs.className='fa-dodont';
+      signs.innerHTML='<div class="fa-do-title" style="color:'+col+'">⚠️ Warning Signs — علامات التحذير</div>';
+      t.signs.forEach(function(s){
+        signs.innerHTML+='<div class="fa-do-item">⚠️ <span>'+s.en+' &nbsp;/&nbsp; <span style="font-family:var(--font-ar)">'+s.ar+'</span></span></div>';
+      });
+      rightCol.appendChild(signs);
+    }
+
+    // Do / Don't
+    var dodont=document.createElement('div');
+    dodont.className='fa-dodont';
+    if(t.doList && t.doList.length){
+      dodont.innerHTML='<div class="fa-do-title do">✅ DO — افعل</div>';
+      t.doList.forEach(function(d){
+        dodont.innerHTML+='<div class="fa-do-item">✅ <span>'+d.en+' &nbsp;/&nbsp; <span style="font-family:var(--font-ar)">'+d.ar+'</span></span></div>';
+      });
+    }
+    if(t.dontList && t.dontList.length){
+      dodont.innerHTML+='<div class="fa-do-title dont" style="margin-top:10px">❌ DON\'T — لا تفعل</div>';
+      t.dontList.forEach(function(d){
+        dodont.innerHTML+='<div class="fa-do-item">❌ <span>'+d.en+' &nbsp;/&nbsp; <span style="font-family:var(--font-ar)">'+d.ar+'</span></span></div>';
+      });
+    }
+    rightCol.appendChild(dodont);
+
+    // Emergency
+    var emg=document.createElement('div');
+    emg.className='fa-emergency';
+    emg.innerHTML='<div class="fa-emergency-num">🚨 999</div>'+
+      '<div class="fa-emergency-text">'+t.emergency.en+'</div>'+
+      '<div class="fa-emergency-text-ar">'+t.emergency.ar+'</div>';
+    rightCol.appendChild(emg);
+
+    body.appendChild(rightCol);
+    detail.appendChild(body);
+  }
+
+  // Start idle countdown
+  faStartIdle();
+}
+
+function faStartIdle(){
+  faStopIdle();
+  faIdleRemain=faIdleSeconds;
+  document.getElementById('fa-idle-wrap').style.display='flex';
+  document.getElementById('fa-idle-bar').style.width='100%';
+  faIdleInterval=setInterval(function(){
+    faIdleRemain--;
+    var pct=Math.max(0,(faIdleRemain/faIdleSeconds)*100);
+    document.getElementById('fa-idle-bar').style.width=pct+'%';
+    document.getElementById('fa-idle-label').textContent='Returning in '+faIdleRemain+'s';
+    if(faIdleRemain<=0){ faStopIdle(); faShowMenu(); }
+  },1000);
+}
+
+function faStopIdle(){
+  if(faIdleInterval){ clearInterval(faIdleInterval); faIdleInterval=null; }
+}
+
+// Reset idle timer on any touch in FA screen
+document.addEventListener('pointerdown',function(){
+  if(CUR_SCREEN==='fa' && faIdleInterval){ faIdleRemain=faIdleSeconds; }
+});
+
+// ═══════════════════════════════════════
+// ADMIN
+// ═══════════════════════════════════════
+var adminZone = ZONE_NUM;
+var adminGame = ZONE_GAME;
+var adminLang = LANG;
+
+var GAME_NAMES = {all:'All Games',ws:'Word Search',cw:'Crossword',pl:'Healthy Plate',cb:'Colour by Number',fa:'First Aid',ph:'Public Health',re:'Resilience'};
+
+// ── ADMIN HOLD-TO-OPEN ──
+var adminHoldTimer=null;
+var ADMIN_HOLD_MS=2000;
+
+function adminHoldStart(){
+  var circle=document.getElementById('admin-ring-circle');
+  if(circle){
+    circle.style.transition='none';
+    circle.style.strokeDashoffset='138.2';
+    void circle.getBoundingClientRect();
+    circle.style.transition='stroke-dashoffset '+ADMIN_HOLD_MS+'ms linear';
+    circle.style.strokeDashoffset='0';
+  }
+  adminHoldTimer=setTimeout(function(){
+    adminModalOpen();
+  }, ADMIN_HOLD_MS);
+}
+
+function adminHoldCancel(){
+  clearTimeout(adminHoldTimer);
+  adminHoldTimer=null;
+  var circle=document.getElementById('admin-ring-circle');
+  if(circle){
+    circle.style.transition='stroke-dashoffset 0.2s ease';
+    circle.style.strokeDashoffset='138.2';
+  }
+}
+
+function adminModalOpen(){
+  adminHoldCancel();
+  adminRefresh();
+  document.getElementById('admin-modal').classList.add('show');
+}
+
+function adminModalClose(){
+  document.getElementById('admin-modal').classList.remove('show');
+  var saved=document.getElementById('admin-saved');
+  if(saved) saved.classList.remove('show');
+}
+
+function adminRefresh(){
+  adminZone = localStorage.getItem('sehhi_zone_num')||'1';
+  adminGame = localStorage.getItem('sehhi_zone_game')||'all';
+  adminLang = localStorage.getItem('sehhi_lang')||'en';
+  adminPickZone(+adminZone, true);
+  adminPickGame(adminGame, true);
+  adminPickLang(adminLang, true);
+  adminUpdateCurrent();
+}
+
+function adminPickZone(n, silent){
+  adminZone = String(n);
+  document.querySelectorAll('.admin-zone-btn').forEach(function(b){
+    b.classList.toggle('active', b.dataset.zone===adminZone);
+  });
+  if(!silent) adminUpdateCurrent();
+}
+
+function adminPickGame(g, silent){
+  adminGame = g;
+  document.querySelectorAll('.admin-game-btn').forEach(function(b){
+    b.classList.toggle('active', b.dataset.game===g);
+  });
+  if(!silent) adminUpdateCurrent();
+}
+
+function adminPickLang(l, silent){
+  adminLang = l;
+  document.querySelectorAll('.admin-lang-pick').forEach(function(b){
+    b.classList.toggle('active', b.dataset.lang===l);
+  });
+  if(!silent) adminUpdateCurrent();
+}
+
+function adminUpdateCurrent(){
+  document.getElementById('admin-cur-zone').textContent = 'Zone '+adminZone;
+  document.getElementById('admin-cur-game').textContent = GAME_NAMES[adminGame]||adminGame;
+  document.getElementById('admin-cur-lang').textContent = adminLang==='ar'?'عربي':'English';
+}
+
+function adminSave(){
+  localStorage.setItem('sehhi_zone_num', adminZone);
+  localStorage.setItem('sehhi_zone_game', adminGame);
+  localStorage.setItem('sehhi_lang', adminLang);
+  ZONE_NUM = adminZone;
+  ZONE_GAME = adminGame;
+  setLang(adminLang);
+  var saved = document.getElementById('admin-saved');
+  saved.classList.add('show');
+  setTimeout(function(){
+    saved.classList.remove('show');
+    adminModalClose();
+    showScreen('home');
+  }, 1800);
+}
+
+// ═══════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════
+(function init(){
+  if(LANG==='ar'){
+    document.body.classList.add('ar');
+    document.documentElement.setAttribute('lang','ar');
+    document.documentElement.setAttribute('dir','rtl');
+  }
+  syncAllLangBtns();
+})();
+</script>
+<script src="app.js"></script>
+</body>
+</html>
